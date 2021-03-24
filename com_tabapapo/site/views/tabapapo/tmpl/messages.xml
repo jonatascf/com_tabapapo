@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+
+	<layout title="COM_TABAPAPO_TABAPAPO_VIEW_MESSAGES_TITLE">
+		<message>COM_TABAPAPO_TABAPAPO_VIEW_MESSAGES_DESC</message>
+	</layout>
+
+	<fields
+		name="request"
+		addfieldpath="/components/com_tabapapo/models/fields">
+
+		<fieldset name="request">
+			<field
+					name="id"
+					type="tabapapomsg"
+					label="COM_TABAPAPO_TABAPAPO_FIELD_MSG_LABEL"
+					description="COM_TABAPAPO_TABAPAPO_FIELD_MSG_DESC"
+					/>
+		</fieldset>
+
+	</fields>
+
+</metadata>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form
+>
+      <field
+          name="sala_id"
+          type="hidden"
+          default="1"
+          />
+      <field
+          name="usu_id"
+          type="hidden"
+          />
+      <field
+          name="falacom_id"
+          type="hidden"
+          />          
+      <field
+          name="params"
+          type="hidden"
+          />          
+      <field
+          name="msg"
+          type="textarea"
+          class="span12"
+          rows="3"
+          cols="80"
+  				label="COM_TABAPAPO_SEND_FIELD_MSG_LABEL"
+  				description="COM_TABAPAPO_SEND_FIELD_MSG_DESC"
+          hint="COM_TABAPAPO_SEND_FILD_MSG_HINT"
+          >
+          </field>
+      <field
+          name="privado"
+          type="radio"
+          default="0"
+          label="Privado"
+          description="private msg"
+          class="btn-group btn-group-yesno">
+          <option value="1">JYES</option>
+          <option value="0">JNO</option>
+      </field>
+          <field
+          name="status"
+          type="radio"
+          label="COM_TABAPAPO_TABAPAPO_FIELD_STATUS_LABEL"
+          description="COM_TABAPAPO_TABAPAPO_FIELD_STATUS_DESC"
+          default="1"
+          class="btn-group"
+          >
+          <option value="1">COM_TABAPAPO_SEND_FIELD_CONECTED</option>
+          <option value="2">COM_TABAPAPO_SEND_FIELD_AWAY</option>
+          </field>              
+</form>

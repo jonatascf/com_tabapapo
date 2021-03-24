@@ -1,0 +1,39 @@
+
+.texto {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+  	background-color: #FFFFFF;
+}
+
+.privado {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	border: 1px solid #ebccd1;
+	background-color: #f2dede;	
+}
+
+.publico {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	border: 1px solid #bce8f1;
+	background-color: #d9edf7;	
+}
+
+.talkto {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	border: 1px solid #d6e9c6;
+	background-color: #dff0d8;	
+}
+
+.msgsys {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	border: 1px solid #cc6234;
+	background-color: #ffa27d;	
+}
