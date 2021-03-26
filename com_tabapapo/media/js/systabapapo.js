@@ -33,7 +33,7 @@ function rolar() {
 function inicia(){
 	//document.getElementById("load").style.visibility = 'hidden';
 	document.getElementById('jform[msg2]').focus();
-	document.getElementById("exibefrase").innerHTML  = 'Você está falando com Todos.';
+	document.getElementById("exibefrase").innerHTML  = 'You are talking to everyone.';
 }
 
 //	var textar = document.getElementById('jform[msg]');
@@ -265,8 +265,8 @@ function send_msg(id, sala_id, usu_id, tk){
 	}
 	
 	text = '<div class="'+type+'">'+usu_id+' disse '+msg+'</div>';
-	conteudo +=  text;
-	doc.getElementById('showmsg').innerHTML =  conteudo;
+	//conteudo +=  text;
+	//doc.getElementById('showmsg').innerHTML =  conteudo;
 	
 	}
 	else{
@@ -301,7 +301,7 @@ function Ler(idframe, usu_id, tk){
         type: 'GET',
         success: function (response) { populateChatRoom(idframe, usu_id, response.data);
         											//clearTimeout(re);
-													setTimeout(function () { Ler(idframe, usu_id, tk); }, 1000); }
+													setTimeout(function () { Ler(idframe, usu_id, tk); }, 400); }
     });
     
 

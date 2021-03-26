@@ -261,7 +261,7 @@ $input = Factory::getApplication()->input;
                         "falacom_id" => 0,
                         "params" => ''];
             
-            $this->enviarMensagem($userin);
+            //$this->enviarMensagem($userin);
 
             
             //$this->enviarMsg($sala_id, $results->usu_id, 'entrou na sala', 0, 0,'');

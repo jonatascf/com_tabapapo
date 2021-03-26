@@ -57,7 +57,7 @@ for ($i = 0; $i < $usuarios; $i++) {
       $typeuser = 'privado';
    }
    
-   $users_on .= '<div class="' . $typeuser . '">' . '@ ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('username') . '</div>';
+   $users_on .= '<div class="' . $typeuser . '">' . '@ ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('username'). '<i> [' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('id') . ']</i></div>';
 
 }
 
@@ -74,15 +74,15 @@ $styleiframe = '.frames {'
         . 'width: 100%;'
         . 'border: 1px solid #ddd;'
         . '}'
-        . '.boxdiv {'
-        . 'border: 1px solid blue;'        
-        . '}'
-        . '.boxdivg {'
-        . 'border: 1px solid green;'        
-        . '}'        
-        . '.boxdivr {'
-        . 'border: 1px solid red;'        
-        . '}'
+//        . '.boxdiv {'
+//        . 'border: 1px solid blue;'        
+//        . '}'
+//        . '.boxdivg {'
+//        . 'border: 1px solid green;'        
+//        . '}'        
+//        . '.boxdivr {'
+//        . 'border: 1px solid red;'        
+//        . '}'
         . '.tablet {'
         . 'text-align: left;'        
         . '}'
@@ -260,7 +260,7 @@ var_dump($_POST);
          rows="3"
          id="jform[msg2]"
          class="span12"
-         onKeyPress="ContaCaracteres();if (event.keyCode==13){ VerificaMsg();}"
+         onKeyPress="ContaCaracteres();if (event.keyCode==13){ send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();}"
          onKeyDown="ContaCaracteres();"
          onKeyUp="ContaCaracteres();"
          onFocus="ContaCaracteres();"
@@ -272,8 +272,8 @@ var_dump($_POST);
       </div>
       <div class="span2">
       
-			<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar"></span></small>                  
-         <button type="button" class="btn btn-primary" onclick="send_msg('frameread', sala_id, usu_id, tk);">
+			<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar_"></span></small>                  
+         <button type="button" class="btn btn-primary" onclick="send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();">
 			<span class="icon-ok"></span><?php echo JText::_('COM_TABAPAPO_SEND_SEND') ?>
          </button>
 
