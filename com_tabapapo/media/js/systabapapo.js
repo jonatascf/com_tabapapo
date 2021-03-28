@@ -1,25 +1,12 @@
-//jQuery(document).ready(function() {
-    
-  //  const params = Joomla.getOptions('params');
+//JS
 
-//});
-
-
-jQuery(document).ready(function() {
-        title = jQuery("#jform_title").val();
-        jQuery("#jform_status").val(title);
- //     jQuery.post("", "campo1=dado1&campo2=dado2&campo3=dado3", function( data ) {console.log(data);});
-     
-	});
-    
 var conteudo = '';
 var usuarioson = '';
 var lmsg_id = 0;
-var flood = 0; //continuar
+var flood = 0;
 var imgenvia = new Image();
 
-	var re;
-
+var re;
 
 
 function rolar() { 
@@ -51,10 +38,10 @@ function ContaCaracteres(){
 var frameread = 'frameread';
 
 	if((qtd > 0) && (qtd < 2)){
-		document.getElementById("botenviar").innerHTML = '<a href="#" onClick="VerificaMsg();send_msg('+"'"+frameread+"'"+', sala_id, usu_id, tk);"><i class="icon-ok"></i></a>';
+		//document.getElementById("botenviar").innerHTML = '<a href="#" onClick="VerificaMsg();send_msg('+"'"+frameread+"'"+', sala_id, usu_id, tk);"><i class="icon-ok"></i></a>';
 	}
 	if(qtd == 0){
-		document.getElementById("botenviar").innerHTML = '<i class="icon-ok"></i>';	
+		//document.getElementById("botenviar").innerHTML = '<i class="icon-ok"></i>';	
 	}
 	if (qtd > 300){
 	    textar.value = mensagem.substr(0,300)
@@ -137,6 +124,16 @@ return true;
 
 }
 
+
+function stripHtml(html) {
+
+   let tmp = document.createElement("DIV");
+   tmp.innerHTML = html;
+   return tmp.textContent || tmp.innerText || "";
+
+}
+
+
 function populateChatRoom(idframe, usu_id, msgs) { 
 
 	var iframe = document.getElementById(idframe); 
@@ -144,6 +141,7 @@ function populateChatRoom(idframe, usu_id, msgs) {
 	var i;
 	var type;
 	var inter;
+	var htmltext;
 
 	if(iframe.contentDocument) { 
 	    doc = iframe.contentDocument; 
@@ -188,8 +186,10 @@ function populateChatRoom(idframe, usu_id, msgs) {
 				type = 'privado';
 				inter = 'fala reservadamente com';
 			}
+			
+			htmltext = stripHtml(msgs[i].msg);
 					
-			conteudo += '<div class="' + type + '"><b> ' + msgs[i].usu_id + ' </b><i>' + inter + msgs[i].falacom_id + '</i>:' + msgs[i].msg + '</div>';
+			conteudo += '<div class="' + type + '"><b> ' + msgs[i].usu_id + ' </b><i>' + inter + msgs[i].falacom_id + '</i>: ' + htmltext + '</div>';
 			
 		}
 	

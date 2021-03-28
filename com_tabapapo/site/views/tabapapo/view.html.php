@@ -168,11 +168,13 @@ class conexoesTabapapo {
 
 		$query = $db->getQuery(true);
 
-		$query->select($db->quoteName(array('id', 'sala_id', 'usu_id', 'status', 'params', 'tempo')));
+      $fieldlist = $db->quoteName(array('usu_id', 'sala_id', 'id', 'status', 'params', 'tempo'));
+      
+		$query->select($fieldlist);
 		$query->from($db->quoteName('#__tabapapo_usu'));
 		$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
 
-		$db->setQuery($query);
+      $db->setQuery($query);
       $db->execute();
       $nrows = $db->getNumRows();
 		

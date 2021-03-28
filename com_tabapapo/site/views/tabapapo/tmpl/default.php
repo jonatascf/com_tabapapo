@@ -27,7 +27,7 @@ $msgs = json_encode($msgs);
 $usuarios = $conec->listarUsuarios($this->item->id);
 $usuarios = json_encode($usuarios);
 
-var_dump($usuarios);
+echo 'Users:'.$usuarios;
 
 $currentuser = JFactory::getuser();
 
@@ -173,7 +173,7 @@ addBeforeunloadEvent();
 
 <?php
 
-var_dump($_POST);
+//var_dump($_POST);
 
     $src = $this->item->imageDetails['imagem'];
     if ($src)
@@ -232,7 +232,7 @@ var_dump($_POST);
 
       <div class="boxdivg">
 
-         <i class="icon-circle"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span>
+         <i class="icon-circle" style="color:#51a351;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span>
       
       </div>
       
@@ -272,7 +272,7 @@ var_dump($_POST);
       </div>
       <div class="span2">
       
-			<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar_"></span></small>                  
+	<!--	<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar"></span></small>  -->
          <button type="button" class="btn btn-primary" onclick="send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();">
 			<span class="icon-ok"></span><?php echo JText::_('COM_TABAPAPO_SEND_SEND') ?>
          </button>
