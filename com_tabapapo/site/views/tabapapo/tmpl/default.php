@@ -57,7 +57,7 @@ for ($i = 0; $i < $usuarios; $i++) {
       $typeuser = 'privado';
    }
    
-   $users_on .= '<div class="' . $typeuser . '">' . '@ ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('username'). '<i> [' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('id') . ']</i></div>';
+   $users_on .= '<div class="' . $typeuser . '">' . '@ ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('username'). '<b><i> ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('id') . '</i></b></div>';
 
 }
 
@@ -199,7 +199,7 @@ addBeforeunloadEvent();
           <th class="span8" ><h4 class="tablet"><?php echo $this->item->title.(($this->item->category and $this->item->params->get('show_category'))
                                                     ? (' ('.$this->item->category.')') : ''); ?></h4>   </th>
 
-          <th class="span4" ><h4 class="tablet">Falar com:</h4></th>
+          <th class="span4" ><h4 class="tablet">Talk to:</h4></th>
         </tr>
         <tr>
           <td onMouseOver="document.getElementById('rolagem').value = 0" onMouseOut="document.getElementById('rolagem').value = 1,rolar()">        
@@ -274,7 +274,7 @@ addBeforeunloadEvent();
       
 	<!--	<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar"></span></small>  -->
          <button type="button" class="btn btn-primary" onclick="send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();">
-			<span class="icon-ok"></span><?php echo JText::_('COM_TABAPAPO_SEND_SEND') ?>
+			<span class="icon-ok"></span>
          </button>
 
       </div>
@@ -290,7 +290,7 @@ addBeforeunloadEvent();
       <div class="span2">    
          
          <button type="button" class="btn btn-primary" onclick="sair();">
-         <span class="icon-exit"></span>Sair
+         <span class="icon-exit"></span>
          </button>
          
       	<input type="hidden" id="lmsg"/>
@@ -301,7 +301,9 @@ addBeforeunloadEvent();
       </form>
       
       </div>
-  
+
    </div>
 
 </div>
+<!--- Please do not delete the code line below. -->
+<p style="text-align:center;" ><mark>Powered by <a href="http://tabaoca.org">Tabaoca</a></mark></p>

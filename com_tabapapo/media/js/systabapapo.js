@@ -158,18 +158,18 @@ function populateChatRoom(idframe, usu_id, msgs) {
 			
 			if ((msgs[i].usu_id == usu_id) && (msgs[i].reservado == 0)) {
 				type = 'talkto';
-				inter = 'fala com';
+				inter = 'talk to';
 			} else {
 				type = 'publico';
-				inter = 'fala com';
+				inter = 'talk to';
 			}
 			
 			if ((msgs[i].falacom_id == usu_id) && (msgs[i].reservado == 0)) {
 				type = 'talkto';
-				inter = 'fala com';
+				inter = 'talk to';
 			} else {
 				type = 'publico';
-				inter = 'fala com';
+				inter = 'talk to';
 			}
 
 		//	$ver = $falacom;
@@ -179,12 +179,12 @@ function populateChatRoom(idframe, usu_id, msgs) {
 			
 			if ((msgs[i].reservado != 0) && (msgs[i].falacom_id == usu_id)) {
 				type = 'privado';
-				inter = 'fala reservadamente com';
+				inter = 'talk to'; //reservadamente
 			} 
 			
 			if ((msgs[i].reservado != 0) && (msgs[i].usu_id == usu_id)) {
 				type = 'privado';
-				inter = 'fala reservadamente com';
+				inter = 'talk to';
 			}
 			
 			htmltext = stripHtml(msgs[i].msg);

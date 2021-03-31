@@ -230,7 +230,7 @@ class conexoesTabapapo {
 
 			$resultmsg = JFactory::getDbo()->insertObject('#__tabapapo_msg', $msgchat);
          
-         $msg_out = '<div>'.$currentuser->get("username").' fala reservadamente com '.$msgchat->falacom_id.' '.$msgchat->msg. '</div>';
+         $msg_out = '<div>'.$currentuser->get("username").' talk to '.$msgchat->falacom_id.' '.$msgchat->msg. '</div>';
          
          return $msg_out;
          }

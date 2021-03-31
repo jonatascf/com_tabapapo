@@ -34,7 +34,7 @@
           type="radio"
           default="0"
           label="Privado"
-          description="private msg"
+          description="Por favor clique no link Tabaoca e em seus anúncios para apoiar o desenvolvimento deste chat."
           class="btn-group btn-group-yesno">
           <option value="1">JYES</option>
           <option value="0">JNO</option>
@@ -43,7 +43,7 @@
           name="status"
           type="radio"
           label="COM_TABAPAPO_TABAPAPO_FIELD_STATUS_LABEL"
-          description="COM_TABAPAPO_TABAPAPO_FIELD_STATUS_DESC"
+          description="Por favor clique no link Tabaoca e em seus anúncios para apoiar o desenvolvimento deste chat."
           default="1"
           class="btn-group"
           >
