@@ -1,12 +1,9 @@
 //JS
 
 var conteudo = '';
-var usuarioson = '';
 var lmsg_id = 0;
 var flood = 0;
 var imgenvia = new Image();
-
-var re;
 
 
 function rolar() { 
@@ -116,7 +113,6 @@ sl = sala_id;
         type: 'POST',
         success: function (result,status,xhr) { displaySearchResults(sala_id);
         
-							   // do something with the result
         }
     });
 
@@ -193,20 +189,15 @@ function populateChatRoom(idframe, usu_id, msgs) {
 			
 		}
 	
-	//conteudo = msgs[12].id;
 	doc.getElementById('showmsg').innerHTML = conteudo; 
-//	clearTimeout(re);
-//	setTimeOut( function () { Ler(idframe, usu_id, tk); },1000);
 	
-	
-	//document.getElementById('msg').focus();
 	}
+
 }
 
+function populateUsersOn(id, userson) { 
 
-function populateUsersOn(id, text) { 
-
-
+	var usuarioson = '';
 	var iframe = document.getElementById(id); 
 	var doc; 
 
@@ -216,8 +207,23 @@ function populateUsersOn(id, text) {
 	    doc = iframe.contentWindow.document; 
 	}
 
-	doc.getElementById('showusers').innerHTML = text; 
+	if (userson) { 
+		
+		for (i = 0; i < userson.length; i++) {
+						
+			if ((userson[i].status == 1)) {
+				type = 'talkto';
+			} else {
+				type = 'away';
+			}
 
+			usuarioson += '<div class="' + type + '">' + '<b>@ ' + userson[i].usu_id + '</b></div>';	
+			
+		}
+
+	doc.getElementById('showusers').innerHTML = usuarioson; 
+
+	}
 }
 
 function send_msg(id, sala_id, usu_id, tk){
@@ -227,7 +233,7 @@ function send_msg(id, sala_id, usu_id, tk){
 	var doc;
 	var text;
 	var msg;
-	var token = tk; //continuar
+	var token = tk;
 	var myform;
    var fd;
 	var url = jQuery("form[name='adminForm']").attr("action");
@@ -250,8 +256,6 @@ function send_msg(id, sala_id, usu_id, tk){
     });
 
 	
-//	Joomla.submitbutton('tabapapoform.submit');
-	
 	if(iframe.contentDocument) { 
     doc = iframe.contentDocument; 
    } else {
@@ -265,32 +269,39 @@ function send_msg(id, sala_id, usu_id, tk){
 	}
 	
 	text = '<div class="'+type+'">'+usu_id+' disse '+msg+'</div>';
-	//conteudo +=  text;
-	//doc.getElementById('showmsg').innerHTML =  conteudo;
-	
+
 	}
 	else{
 		document.getElementById("exibefrase").innerHTML  = '<span>O sistema anti-flood está ativado.</span>';
 	}
 	
-			//doc.scrollBy(0,70);
-	//document.getElementById('jform[msg]').value = "";
-	//document.getElementById('jform[msg]').focus();
 }
 
 function liberaflood(){
 	flood = 0;
 }
 
-function reenvia(idframe, usu_id, tk){
-	Ler(idframe, usu_id, tk);
-}
+function Ler_users(idframe, tk){
 
+	var token = tk;
+
+	var url = jQuery("form[name='adminForm']").attr("action");
+	 	 url += '&' + token + '=1'+'&'+'task=usersLer'+'&'+'format=json';
+
+	var xmsgs = jQuery.ajax({
+        url: url,
+        datatype: 'json',
+        type: 'POST',
+        success: function (response) { populateUsersOn(idframe, response.data);
+  													setTimeout(function () { Ler_users(idframe, tk); }, 400); }
+    });
+    
+}
 
 function Ler(idframe, usu_id, tk){
 
 
-	var token = tk; //continuar
+	var token = tk;
 
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + token + '=1'+'&'+'task=mensagemLer'+'&'+'format=json'+'&'+'lmsg='+lmsg_id;
@@ -300,25 +311,15 @@ function Ler(idframe, usu_id, tk){
         datatype: 'json',
         type: 'GET',
         success: function (response) { populateChatRoom(idframe, usu_id, response.data);
-        											//clearTimeout(re);
 													setTimeout(function () { Ler(idframe, usu_id, tk); }, 400); }
     });
     
-
-	//re = setTimeout(function () { reenvia(idframe, usu_id, tk);}, 10000);
-
-
 }
 
 
 
 function displaySearchResults(result) {
 
-      //alert("successful");
-      
-            		//	alert("Result: "+result['sala_id']+", Message: "+result.message);
-       
-        
 
 }
 

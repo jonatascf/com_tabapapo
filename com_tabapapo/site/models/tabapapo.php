@@ -202,6 +202,8 @@ $input = Factory::getApplication()->input;
                			
             $results = $db->loadObjectList();
             
+            
+            
             return $results;
            }
            
@@ -220,7 +222,53 @@ $input = Factory::getApplication()->input;
 
 	}
 
+	public function  userslerB($sala_id) {
+	   
+      $currentuser = JFactory::getuser();
 
+      $input = Factory::getApplication()->input;
+         
+         if($currentuser->get("id") > 0){
+   		try {  
+            $usu_id = $currentuser->get("id");
+   			$date = new Date();
+            $object = new stdClass();
+            $object->id = $usu_id;
+            $object->tempo = $date->toSQL();
+
+   			$db = JFactory::getDbo();
+   			
+            $result = $db->updateObject('#__tabapapo_usu', $object, 'id');
+            
+            //DELETE users time out
+            
+            $query = $db->getQuery(true);
+
+   			$query->select($db->quoteName(array('id','sala_id','usu_id','status','ip','params','tempo')));
+   			$query->from($db->quoteName('#__tabapapo_usu'));
+   			$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+            $query->order($db->quoteName('tempo'), 'ASC');
+            
+   			$db->setQuery($query);
+               			
+            $results = $db->loadObjectList();
+            
+            return $results;
+           }
+           
+   		catch (Exception $e)
+   		{
+   			$msg = $e->getMessage();
+   			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
+   			$resultmsg = null;
+   		  }
+           
+      	}
+   		else {
+   			header('Location:index.php');
+   		}
+      
+	}
 
 	public function  entrarSalaB($sala_id) {
 	   
@@ -284,7 +332,36 @@ $input = Factory::getApplication()->input;
 
 	}
 
+   public function atualizarStatus($id, $status) {
 
+      // Create an object for the record we are going to update.
+      $object = new stdClass();
+
+      // Must be a valid primary key value.
+      $object->id = $id;
+      $object->status = $status;
+
+      // Update their details in the users table using id as the primary key.
+      $result = JFactory::getDbo()->updateObject('#__tabapapo_usu', $object, 'id');
+
+      
+   }
+   
+   public function atualizarParams($id, $params) {
+
+      // Create an object for the record we are going to update.
+      $object = new stdClass();
+
+      // Must be a valid primary key value.
+      $object->id = $id;
+      $object->params = $params;
+
+      // Update their details in the users table using id as the primary key.
+      $result = JFactory::getDbo()->updateObject('#__tabapapo_usu', $object, 'id');
+
+      
+   }
+   
 	public function  sairSalaB($sala_id) {
 	   
       $currentuser = JFactory::getuser();

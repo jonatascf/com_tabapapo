@@ -11,60 +11,10 @@ use Joomla\CMS\Factory;
 JHtml::_('jquery.framework');
 JHtml::_('behavior.formvalidator');
 
-
-
-$conec = new conexoesTabapapo;
-
-$idusu = $conec->entrarSala($this->item->id);
-
-$rows = $conec->lerMsgs($this->item->id);
-
-$msgs = $conec->mensagens;
-$msgs = json_encode($msgs);
-
-//var_dump($msgs);
-
-$usuarios = $conec->listarUsuarios($this->item->id);
-$usuarios = json_encode($usuarios);
-
-echo 'Users:'.$usuarios;
-
 $currentuser = JFactory::getuser();
-
-//$statuson = JControllerLegacy::atualizaStatus($idusu, 0);
-
-//$msg_out = $conec->enviarMsg($this->item->id, $currentuser->get("id"), 'vou embora...', 0, 0, '');
-//$conec->sairSala($this->item->id, $currentuser->get("id"));
-
-//terminar
-
-$msgs_inicial = "";
-
-for ($i = 0; $i < $rows; $i++) {
-   $msgs_inicial .= '<div class="'.'publico'.'">'.$conec->mensagens[$i]->id.' '.$conec->mensagens[$i]->msg.'</div>';
-}
-
-$users_on = "";
-
-
-
-for ($i = 0; $i < $usuarios; $i++) {
-
-   if ($conec->usuarios[$i]->status) { 
-      $typeuser = 'talkto'; 
-   }
-   else {
-      $typeuser = 'privado';
-   }
-   
-   $users_on .= '<div class="' . $typeuser . '">' . '@ ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('username'). '<b><i> ' . JFactory::getUser($conec->usuarios[$i]->usu_id)->get('id') . '</i></b></div>';
-
-}
-
 $document = JFactory::getDocument();
-$document->addScriptDeclaration('var dados = '.$msgs.';' .
-                                'var users = '."'".$users_on."'".';'.
-                                'var sala_id = '.$this->item->id.';'.
+
+$document->addScriptDeclaration('var sala_id = '.$this->item->id.';'.
                                 'var usu_id = '.$currentuser->get("id").';'.
                                 'var tk = '."'".JSession::getFormToken()."'".';'
                                 );
@@ -139,41 +89,18 @@ function addBeforeunloadEvent() {
   }
 }
 
-function addUnloadEvent() {
-	var oldonload = window.onunload;
-	if (typeof window.onunload != 'function') {
-        	window.onunload = function(){ saindo(sala_id, tk); return "saindo";}
-	} 
-	else {
-       window.onunload = function() {  
-                                             if (oldonload) { oldonload();} 
-                                             alert("successful"); 
-                                             saindo(sala_id, tk);
-                                             return "saindo";
-   }
-  }
-}
-
-
-//window.addEventListener("onload", () => {alert("successful");} );
-//window.addEventListener("beforeunload", () => {alert("successful");} );
-
 addLoadEvent(function(){ rolar(); 
                          inicia();
                          entrando(sala_id, tk);
                          Ler("frameread", usu_id, tk);
+                         Ler_users("frameusers", tk);
                          });
 addBeforeunloadEvent();
-//addUnloadEvent();
+
 
 </script>
 
-  
-
-
 <?php
-
-//var_dump($_POST);
 
     $src = $this->item->imageDetails['imagem'];
     if ($src)
@@ -187,7 +114,6 @@ addBeforeunloadEvent();
         echo sprintf($html, $src, $alt, $caption);
     }
 
-// iframeread                   onload = "populateChatRoom(this.id, dados);"
 ?>
 
 
@@ -217,7 +143,6 @@ addBeforeunloadEvent();
                   id="frameusers"
                   name="fusers"
                   class="frames"
-                  onload = "populateUsersOn(this.id, users);"
                   src="<?php echo JRoute::_('index.php?option=com_tabapapo&view=tabapapo&layout=usuarios&tmpl=usuarios'); ?>"
                   marginwidth="0"
                   marginheight="0"
@@ -227,7 +152,7 @@ addBeforeunloadEvent();
 
         </tr>
       </table>
-      <?php //var_dump($_POST); ?>
+
       </div>
 
       <div class="boxdivg">
@@ -235,8 +160,6 @@ addBeforeunloadEvent();
          <i class="icon-circle" style="color:#51a351;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span>
       
       </div>
-      
-
 
    <div>
       <div class="span4 textarea-container">

@@ -40,6 +40,19 @@ class TabaPapoController extends JControllerLegacy
         }
     }
 
+    public function usersLer() {
+    
+        if (!JSession::checkToken('get')) 
+        {
+            echo new JResponseJson(null, JText::_('JINVALID_TOKEN'), true);
+        }
+        else 
+        {
+
+            $this->getusersler();
+        }
+    }
+
    public function salaEntrar() {
       
       if (!JSession::checkToken('get')) 
@@ -94,6 +107,34 @@ class TabaPapoController extends JControllerLegacy
 		if ($item->id > 0)
 		{
 			$records = $model->msgslerB($item->id);
+         
+			if ($records) 
+			{
+				echo new JResponseJson($records);
+			}
+			else
+			{
+				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+			}
+		}
+		else 
+		{
+			$records = array();
+			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+		}
+	}   
+
+ 	public function getusersler()
+	{
+		//$input = JFactory::getApplication()->input;
+		//$sala_id = $input->post->get('sl', '0', 'string');
+    //  $sala_id = $this->get('item')->id;
+//var_dump($sala_id);
+		$model = $this->getModel();
+      $item = $model->getitem();
+		if ($item->id > 0)
+		{
+			$records = $model->userslerB($item->id);
          
 			if ($records) 
 			{
