@@ -71,8 +71,8 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 
 		$document->setTitle(JText::_('COM_TABAPAPO_TABAPAPO_CREATING'));
       
-      $document->addScript('media/com_tabapapo/js/systabapapo.js');
-		$document->addStyleSheet('media/com_tabapapo/css/tabapapo.css');
+      $document->addScript('media/com_tabapapo/js/systabapapo.js' . '?' .JSession::getFormToken());
+		$document->addStyleSheet('media/com_tabapapo/css/tabapapo.css' . '?' .JSession::getFormToken());
       
       
       

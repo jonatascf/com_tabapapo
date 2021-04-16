@@ -14,6 +14,10 @@ JHtml::_('behavior.formvalidator');
 $currentuser = JFactory::getuser();
 $document = JFactory::getDocument();
 
+if ( !$currentuser->get("id")){
+	header('Location:index.php');
+}
+
 $document->addScriptDeclaration('var sala_id = '.$this->item->id.';'.
                                 'var usu_id = '.$currentuser->get("id").';'.
                                 'var tk = '."'".JSession::getFormToken()."'".';'
@@ -46,7 +50,7 @@ $styleiframe = '.frames {'
 }
 .textarea-container i {
   position: absolute;
-  top: 0;
+  top: 1;
   right: 0;
 }';
 
@@ -157,7 +161,7 @@ addBeforeunloadEvent();
 
       <div class="boxdivg">
 
-         <i class="icon-circle" style="color:#51a351;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span>
+         <p><i class="icon-circle" style="color:#51a351;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span></p>
       
       </div>
 
@@ -183,27 +187,26 @@ addBeforeunloadEvent();
          rows="3"
          id="jform[msg2]"
          class="span12"
-         onKeyPress="ContaCaracteres();if (event.keyCode==13){ send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();}"
+         onKeyPress="ContaCaracteres(); if (event.keyCode==13){ send_msg('frameread', sala_id, usu_id, tk);}"
          onKeyDown="ContaCaracteres();"
          onKeyUp="ContaCaracteres();"
          onFocus="ContaCaracteres();"
          onChange="ContaCaracteres();"
          title="Digite sua mensagem"></textarea>
          
-			<i class="icon-smiley-2" onclick="emojis();"></i>
+			<a href="#" onclick="emojis();"><i class="icon-smiley-2"></i></a>
          
+         <?php echo $this->form->renderField('usercolor'); ?>
+                  
       </div>
       <div class="span2">
       
-	<!--	<small class="hasPopover" data-toggle="popover" data-placement="top" title="Header" data-content="Content" data-trigger="focus"><span id="botenviar"></span></small>  -->
-         <button type="button" class="btn btn-primary" onclick="send_msg('frameread', sala_id, usu_id, tk); VerificaMsg();">
-			<span class="icon-ok"></span>
-         </button>
+         <span id="botenviar"></span>
 
       </div>
       
       <div class="span4">
-
+         
          <?php echo $this->form->renderField('privado'); ?>
 
          <?php echo $this->form->renderField('status'); ?>
@@ -212,9 +215,7 @@ addBeforeunloadEvent();
       
       <div class="span2">    
          
-         <button type="button" class="btn btn-primary" onclick="sair();">
-         <span class="icon-exit"></span>
-         </button>
+         <a href="#" onclick="sair();" ><i class="icon-exit"></i>Quit</a>
          
       	<input type="hidden" id="lmsg"/>
          

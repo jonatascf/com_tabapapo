@@ -146,7 +146,7 @@ class TabaPapoModelTabaPapo extends FormModel
 			$msgchat->reservado = $form['privado'];
 			$msgchat->sala_id = $form['sala_id'];
 			$msgchat->usu_id = $currentuser->get("id");
-			$msgchat->params =$form['params'];
+			$msgchat->params = $currentuser->get("username");;
 			$msgchat->msg = $form['msg2'];
 			$msgchat->falacom_id = $form['falacom_id'];
 			$msgchat->tempo = $date->toSQL(); //+180?
@@ -279,6 +279,7 @@ $input = Factory::getApplication()->input;
          if($currentuser->get("id") > 0){
    		try {  
             $usu_id = $currentuser->get("id");
+            $usu_name = $currentuser->get("username");
    			$date = new Date();
             
    			// Create and populate an object.
@@ -286,7 +287,7 @@ $input = Factory::getApplication()->input;
    			$usuchat->sala_id = $sala_id;
    			$usuchat->usu_id = $usu_id;
    			$usuchat->status ='1';
-   			$usuchat->params ='';
+   			$usuchat->params = $usu_name;
    			$usuchat->ip = $_SERVER["REMOTE_ADDR"];
    			$usuchat->tempo = $date->toSQL();  //+30?
 
@@ -303,16 +304,6 @@ $input = Factory::getApplication()->input;
    			$db->setQuery($query);
 
    			$results = $db->loadObject();
-            $userin = ["sala_id" => $sala_id,
-                        "msg2" => 'entrou na sala agora',
-                        "privado" => 0,
-                        "falacom_id" => 0,
-                        "params" => ''];
-            
-            //$this->enviarMensagem($userin);
-
-            
-            //$this->enviarMsg($sala_id, $results->usu_id, 'entrou na sala', 0, 0,'');
 
             return $results->id;
            }

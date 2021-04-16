@@ -13,6 +13,7 @@
       <field
           name="falacom_id"
           type="hidden"
+          default="0"
           />          
       <field
           name="params"
@@ -32,10 +33,11 @@
       <field
           name="privado"
           type="radio"
-          default="0"
+          default="1"
           label="Privado"
           description="Por favor clique no link Tabaoca e em seus anúncios para apoiar o desenvolvimento deste chat."
-          class="btn-group btn-group-yesno">
+          class="btn-group btn-group-yesno"
+          showon="falacom_id!:0">
           <option value="1">JYES</option>
           <option value="0">JNO</option>
       </field>
@@ -46,8 +48,17 @@
           description="Por favor clique no link Tabaoca e em seus anúncios para apoiar o desenvolvimento deste chat."
           default="1"
           class="btn-group"
+          showon="falacom_id!:0"
           >
           <option value="1">COM_TABAPAPO_SEND_FIELD_CONECTED</option>
           <option value="2">COM_TABAPAPO_SEND_FIELD_AWAY</option>
-          </field>              
+          </field>
+          <field 
+          name="usercolor"
+          type="color"
+          default="#fff"
+          format="rgb"
+          label="Color"
+          description="Pick a color."
+          showon="falacom_id!:0" />
 </form>

@@ -98,10 +98,6 @@ class TabaPapoController extends JControllerLegacy
     
  	public function getmsgsler()
 	{
-		//$input = JFactory::getApplication()->input;
-		//$sala_id = $input->post->get('sl', '0', 'string');
-    //  $sala_id = $this->get('item')->id;
-//var_dump($sala_id);
 		$model = $this->getModel();
       $item = $model->getitem();
 		if ($item->id > 0)

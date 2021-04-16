@@ -11,7 +11,7 @@ use Joomla\CMS\MVC\Model\FormModel;
 class TabaPapoModelForm extends FormModel
 {
 
-	public function getForm($data = array(), $loadData = true)
+	public function getsForm($data = array(), $loadData = true)
 	{
 		$form = $this->loadForm(
 			'com_tabapapo.tabapapo',  // just a unique name to identify the form
