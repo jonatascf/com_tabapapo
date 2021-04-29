@@ -33,7 +33,26 @@
 		>
 			<option value="0">JOPTION_SELECT_CATEGORY</option>
 		</field>
+		<field
+        name="version_note"
+				type="text"
+				label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
+				description="JGLOBAL_FIELD_VERSION_NOTE_DESC"
+				class="inputbox" 
+				size="45"
+				labelclass="control-label"
+    >
+		</field>
+
 	</fieldset>
+    <field
+        name="description" 
+				type="editor"
+				label="COM_TABAPAPO_TABAPAPO_FIELD_DESCRIPTION_LABEL" 
+				description="COM_TABAPAPO_TABAPAPO_FIELD_DESCRIPTION_DESC"
+				filter="JComponentHelper::filterText" 
+				buttons="true" 
+		/>  
 	<fields name="imageminfo">
 		<fieldset
 			name="imagem-info"

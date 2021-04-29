@@ -33,12 +33,13 @@ function ContaCaracteres(){
 
 var frameread = 'frameread';
 
-	if((qtd > 0)){
-		document.getElementById("botenviar").innerHTML = '<a href="#" onClick="ContaCaracteres(); send_msg('+"'"+frameread+"'"+', sala_id, usu_id, tk);" ><i class="icon-ok"></i></a>';
+	if((qtd > 0) && (qtd < 2)){
+		document.getElementById("botenviar").innerHTML = '<a href="#" onClick="send_msg('+"'"+frameread+"'"+', sala_id, usu_id, tk);" ><i class="icon-ok"></i></a>';
+	}	
+	if((qtd == 0)){
+		document.getElementById("botenviar").innerHTML = '<i class="icon-ok"></i>';
 	}
-	else{
-		document.getElementById("botenviar").innerHTML = '<i class="icon-ok"></i>';	
-	}
+
 	if (qtd > 300){
 	    textar.value = mensagem.substr(0,300)
 	}

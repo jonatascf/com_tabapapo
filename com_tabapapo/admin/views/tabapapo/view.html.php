@@ -1,16 +1,14 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * TabaPapo View
- *
- * @since  0.0.1
- */
 class TabaPapoViewTabaPapo extends JViewLegacy
 {
 	protected $form;
@@ -98,6 +96,12 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 				{
 					JToolBarHelper::custom('tabapapo.save2new', 'save-new.png', 'save-new_f2.png',
 					                       'JTOOLBAR_SAVE_AND_NEW', false);
+				}
+ 				$config = JFactory::getConfig();
+				$save_history = $config->get('save_history', true);
+				if ($save_history) 
+				{
+					JToolbarHelper::versions('com_tabapapo.tabapapo', $this->item->id);
 				}
 			}
 			if ($this->canDo->get('core.create')) 

@@ -1,22 +1,15 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Form Rule class for the Joomla Framework.
- */
 class JFormRuleTitle extends JFormRule
 {
-	/**
-	 * The regular expression.
-	 *
-	 * @access	protected
-	 * @var		string
-	 * @since	2.5
-	 */
 	protected $regex = '^[^0-9]+$';
 }

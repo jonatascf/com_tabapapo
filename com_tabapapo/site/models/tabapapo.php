@@ -1,8 +1,11 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -75,7 +78,8 @@ class TabaPapoModelTabaPapo extends FormModel
 			$id    = $this->getState('message.id');
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
-			$query->select('h.id, h.title, h.params, h.imagem as imagem, c.title as category')
+			$query->select('h.id, h.title, h.params, h.imagem as imagem, c.title as category,
+                         h.alias, h.catid, h.description')
 				  ->from('#__tabapapo as h')
 				  ->leftJoin('#__categories as c ON h.catid=c.id')
 				  ->where('h.id=' . (int)$id);

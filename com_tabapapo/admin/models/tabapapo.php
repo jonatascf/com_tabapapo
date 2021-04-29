@@ -1,26 +1,28 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\Registry\Registry;
 
-/**
- * TabaPapo Model
- *
- * @since  0.0.1
- */
 class TabaPapoModelTabaPapo extends JModelAdmin
 {
-		/**
+    /**
 	 * Method to override getItem to allow us to convert the JSON-encoded image information
 	 * in the database record into an array for subsequent prefilling of the edit form
 	 */
-	public function getItem($pk = null)
-	{
+    
+   	// Contenthistory needs to know this for restoring previous versions
+	public $typeAlias = 'com_tabapapo.tabapapo';
+   
+	public function getItem($pk = null) {
+   
 		$item = parent::getItem($pk);
 		if ($item AND property_exists($item, 'imagem'))
 		{

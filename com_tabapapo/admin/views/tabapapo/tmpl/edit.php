@@ -1,9 +1,11 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
-
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.formvalidator');
@@ -30,8 +32,11 @@ jQuery(document).ready(function() {
         <fieldset class="adminform">
             <legend><?php echo JText::_('COM_TABAPAPO_LEGEND_DETAILS') ?></legend>
             <div class="row-fluid">
-                <div class="span6">
+                <div class="span3">
                     <?php echo $this->form->renderFieldset('details');  ?>
+                </div>
+                <div class="span9">
+                    <?php echo $this->form->getInput('description');  ?>
                 </div>
             </div>
         </fieldset>

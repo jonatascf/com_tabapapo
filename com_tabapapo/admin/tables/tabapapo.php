@@ -1,36 +1,24 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * Tabapapo Table class
- */
-class TabaPapoTableTabaPapo extends JTable
-{
-	/**
-	 * Constructor
-	 *
-	 * @param   JDatabaseDriver  &$db  A database connector object
-	 */
-	function __construct(&$db)
-	{
-		parent::__construct('#__tabapapo', 'id', $db);
+class TabaPapoTableTabaPapo extends JTable {
+
+	function __construct(&$db)	{
+
+		JObserverMapper::addObserverClassToClass('JTableObserverContenthistory', 'TabapapoTableTabapapo', array('typeAlias' => 'com_tabapapo.tabapapo'));
+      parent::__construct('#__tabapapo', 'id', $db);
 	}
 	
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param       array           named array
-	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
-	 * @see JTable:bind
-	 * @since 1.5
-	 */
-	public function bind($array, $ignore = '')
-	{
+	public function bind($array, $ignore = '') {
+   
 		if (isset($array['params']) && is_array($array['params']))
 		{
 			// Convert the params field to a string.

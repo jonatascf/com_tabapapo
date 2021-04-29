@@ -1,21 +1,14 @@
 <?php
 /**
- * @package     Tabapapo.Administrator
- * @subpackage  com_tabapapo
- */
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * TabaPapo Controller
- *
- * @package     Joomla.Site
- * @subpackage  com_tabapapo
- *
- * Used to handle the http POST from the front-end form which allows 
- * users to enter a new tabapapo message
- *
- */
 class TabaPapoControllerTabaPapo extends JControllerForm
 {   
     public function cancel($key = null)
@@ -104,7 +97,6 @@ class TabaPapoControllerTabaPapo extends JControllerForm
 			return false;
 		}
 
-	// Handle the uploaded file - get it from the PHP $_FILES structure
 		$fileinfo = $this->input->files->get('jform', array(), 'array');
 		$file = $fileinfo['imageminfo']['imagem'];
 		/* The $file variable above should contain an array of 5 elements as follows:

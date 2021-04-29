@@ -1,4 +1,12 @@
 <?php
+/**
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.7.7
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
@@ -90,6 +98,6 @@ class com_tabapapoInstallerScript
      */
     public function postflight($type, $parent) 
     {
-        echo '<p>' . JText::_('COM_TABAPAPO_POSTFLIGHT_' . $type . '_TEXT') . '</p>';
+        
     }
 }
