@@ -1,47 +1,50 @@
+p {
 
-.texto {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	color: #000000;
-  	background-color: #FFFFFF;
 }
 
-.privado {
+.taba-content {
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 12px;
-	color: #000000;
-	border: 1px solid #ebccd1;
-	background-color: #f2dede;	
 }
 
-.publico {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	border: 1px solid #bce8f1;
-	background-color: #d9edf7;	
-}
-
-.talkto {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	color: #000000;
+.taba-conected {
+	color: #333;
 	border: 1px solid #d6e9c6;
 	background-color: #dff0d8;	
 }
 
-.away {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	border: 1px solid #f5ffcc;
-	background-color: #f8f8d3;	
+.taba-away {
+	color: #333;
+	border: 1px solid #faebcc;
+	background-color: #fcf8e3;	
 }
 
-.msgsys {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	border: 1px solid #cc6234;
-	background-color: #ffa27d;	
+.taba-direct {
+	color: #333;
+	border: 1px solid #ebccd1;
+	background-color: #f2dede;	
+}
+
+.taba-self {
+	color: #333;
+	border: 1px solid #d6e9c6;
+	background-color: #dff0d8;	
+}
+
+.taba-others {
+	color: #333;
+	border: 1px solid #bce8f1;
+	background-color: #d9edf7;	
+}
+
+.taba-msgsystem {
+	color: #f5f5f5;
+	border: 1px solid #e3e3e3;
+	background-color: #333;	
+}
+
+.taba-msghead {
+	color: #333;
+	border: 1px solid #e3e3e3;
+	background-color: #f5f5f5;	
 }

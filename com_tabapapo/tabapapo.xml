@@ -5,12 +5,12 @@
 	
 	<creationDate>December 2021</creationDate>
 	<author>Jonatas C. Ferreira</author>
-	<authorEmail>jonatas.ferreira@gmail.com</authorEmail>
-	<authorUrl>http://tabaoca.org</authorUrl>
+	<authorEmail>jonatas@tabaoca.org</authorEmail>
+	<authorUrl>https://tabaoca.org</authorUrl>
 	<copyright>Copyright (C) 2021 Tabaoca. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
 
-	<version>0.8.0</version>
+	<version>0.8.5</version>
 
 	<description>COM_TABAPAPO_DESCRIPTION</description>
 
@@ -78,8 +78,7 @@
 	</administration>
 	
   <updateservers>
-		<!-- Change the URL below to match that of your own update XML file -->
-		<server type="extension" name="Tabapapo Updates">https://tabaoca.org/tabapapo-updates/updates.xml</server>
+		<server type="component" name="Tabapapo Updates">https://tabaoca.org/tabapapo-updates/updates.xml</server>
 	</updateservers>
   
 </extension>

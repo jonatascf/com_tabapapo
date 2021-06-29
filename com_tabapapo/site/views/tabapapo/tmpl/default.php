@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Tabapapo Component for Joomla! 3.9
- * @version 0.7.7
+ * @version 0.8.5
  * @author Jonatas C. Ferreira
  * @copyright (C) 2021 Tabaoca.org
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -24,6 +24,7 @@ if ( !$currentuser->get("id")){
 $document->addScriptDeclaration('var sala_id = '.$this->item->id.';'.
                                 'var usu_id = '.$currentuser->get("id").';'.
                                 'var tk = '."'".JSession::getFormToken()."'".';'
+
                                 );
 
 
@@ -80,30 +81,12 @@ function addLoadEvent(func) {
   }
 }
 
-
-function addBeforeunloadEvent() {
-	var oldonload = window.onbeforeunload;
-	if (typeof window.onbeforeunload != 'function') {
-        	window.onbeforeunload = function(){ saindo(sala_id, tk); return true;}
-	} 
-	else {
-       window.onbeforeunload = function() {  
-                                             if (oldonload) { oldonload();} 
-                                             //alert("successful"); 
-                                             saindo(sala_id, tk);
-                                             return true;
-   }
-  }
-}
-
 addLoadEvent(function(){ rolar(); 
                          inicia();
                          entrando(sala_id, tk);
                          Ler("frameread", usu_id, tk);
                          Ler_users("frameusers", tk);
                          });
-addBeforeunloadEvent();
-
 
 </script>
 
@@ -167,7 +150,7 @@ addBeforeunloadEvent();
 
       <div class="boxdivg">
 
-         <p><i class="icon-circle" style="color:#51a351;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span></p>
+         <p><i id="statusb" class="icon-circle" style="color:#72bf44;"></i><span id="exibefrase"><?php echo $currentuser->get("username").' fala com TODOS.'; ?></span></p>
       
       </div>
 
@@ -179,14 +162,11 @@ addBeforeunloadEvent();
 
          <input type="hidden" id="rolagem" value="1">
 
-
          <?php echo $this->form->renderField('sala_id'); ?>
          <?php echo $this->form->renderField('usu_id'); ?>
          <?php echo $this->form->renderField('falacom_id'); ?>
          <?php echo $this->form->renderField('params'); ?>
-         
 
-         <?php // echo $this->form->renderField('msg'); ?>
 	   <textarea
          name="jform[msg2]"
          cols="85"
@@ -200,7 +180,10 @@ addBeforeunloadEvent();
          onChange="ContaCaracteres();"
          title="Digite sua mensagem"></textarea>
          
-			<a href="#" onclick="emojis();"><i class="icon-smiley-2"></i></a>
+			<!--- <a href="#" onclick="emojis();"><i class="icon-smiley-2"></i></a> -->
+         
+         <input type="checkbox" id="status" name="status" onclick="atualizar_status(sala_id, tk);">
+         <label for="status">Away</label>         
          
          <?php echo $this->form->renderField('usercolor'); ?>
                   
@@ -212,19 +195,19 @@ addBeforeunloadEvent();
       </div>
       
       <div class="span4">
-         
+      
          <?php echo $this->form->renderField('privado'); ?>
 
-         <?php echo $this->form->renderField('status'); ?>
+         <?php echo $this->form->renderField('status'); ?> 
 
       </div>
       
       <div class="span2">    
          
-         <a href="#" onclick="sair();" ><i class="icon-exit"></i>Quit</a>
+         <a href="#" onclick="saindo(sala_id, tk);" ><i class="icon-exit"></i>Exit</a>
          
       	<input type="hidden" id="lmsg"/>
-         
+                           
       	<input type="hidden" name="task" value="mensagemEnviar"/>
          <?php echo JHtml::_('form.token'); ?>
          
@@ -236,4 +219,4 @@ addBeforeunloadEvent();
 
 </div>
 <!--- Please do not delete the code line below. -->
-<p style="text-align:center;" ><mark>Powered by <a href="http://tabaoca.org">Tabaoca</a></mark></p>
+<p style="text-align:center;" >Powered by <a href="https://tabaoca.org">Tabaoca</a></p>

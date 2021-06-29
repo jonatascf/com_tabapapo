@@ -1,7 +1,7 @@
 <?php
 /**
  * @package Tabapapo Component for Joomla! 3.9
- * @version 0.7.7
+ * @version 0.8.5
  * @author Jonatas C. Ferreira
  * @copyright (C) 2021 Tabaoca.org
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -118,12 +118,6 @@ class TabaPapoModelTabaPapo extends FormModel
 			)
 		);
 
-//		if (empty($form))
-//		{
-//            $errors = $this->getErrors();
-//			throw new Exception(implode("\n", $errors), 500);
-//		}
-
 		return $form;
 	}
 
@@ -142,8 +136,17 @@ class TabaPapoModelTabaPapo extends FormModel
 	{
 
          $currentuser = JFactory::getuser();
-         $date = new Date();         
-         
+
+         $db = JFactory::getDbo();
+
+			$querynow = $db->getQuery(true);
+
+			$querynow->select('now() as now');
+   			
+   		$db->setQuery($querynow);
+               			
+         $resultnow = $db->loadObjectList();
+                     
 		try 
 		{         
          $msgchat = new stdClass();
@@ -153,18 +156,10 @@ class TabaPapoModelTabaPapo extends FormModel
 			$msgchat->params = $currentuser->get("username");;
 			$msgchat->msg = $form['msg2'];
 			$msgchat->falacom_id = $form['falacom_id'];
-			$msgchat->tempo = $date->toSQL(); //+180?
+			$msgchat->tempo = $resultnow[0]->now;
 
 			$resultmsg = JFactory::getDbo()->insertObject('#__tabapapo_msg', $msgchat);
          
-//			$db    = JFactory::getDbo();
-//			$query = $db->getQuery(true);
-//			$query->select('h.usu_id, h.sala_id, h.status')
-//			   ->from('#__tabapapo_usu as h')
-//			   ->where('h.sala_id = ' . $form['sala_id'] );
-//			$db->setQuery($query);
-//			$results = $db->loadObjectList(); 
-
 		}
 		catch (Exception $e)
 		{
@@ -176,24 +171,69 @@ class TabaPapoModelTabaPapo extends FormModel
 		return $resultmsg; 
 	}
 
+	public function enviarMensagemSys($form, $type)
+	{
+
+      $currentuser = JFactory::getuser();
+
+      $db = JFactory::getDbo();
+
+		$querynow = $db->getQuery(true);
+
+		$querynow->select('now() as now');
+		
+		$db->setQuery($querynow);
+            			
+      $resultnow = $db->loadObjectList();
+      
+      try 
+		{         
+         $msgchat = new stdClass();
+			
+         if ($type == 1) {
+            $msgchat->msg = $form->params.' entered.';
+         }
+         
+         if ($type == 2) {
+            $msgchat->msg = $form->params.' left.';
+         }
+         
+         $msgchat->reservado = $form->privado;
+			$msgchat->sala_id = $form->sala_id;
+			$msgchat->usu_id = 0; //System Id
+			$msgchat->params = $form->params;
+   		$msgchat->falacom_id = $form->falacom_id;
+			$msgchat->tempo = $resultnow[0]->now;
+
+			$resultmsg = JFactory::getDbo()->insertObject('#__tabapapo_msg', $msgchat);
+         
+		}
+		catch (Exception $e)
+		{
+			$msg = $e->getMessage();
+			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
+			$resultmsg = null;
+		}
+
+		return $resultmsg; 
+	}
 
 	public function  msgslerB($sala_id) {
 	   
       $currentuser = JFactory::getuser();
 
-$input = Factory::getApplication()->input;
+      $input = Factory::getApplication()->input;
 
-  $lmsg_id = $input->get('lmsg',0,'INT');
+      $lmsg_id = $input->get('lmsg',0,'INT');
          
          if($currentuser->get("id") > 0){
    		try {  
             $usu_id = $currentuser->get("id");
-   			$date = new Date();
-            
-            
 
    			$db = JFactory::getDbo();
-
+         
+            $id = $this->atualizarTempo($usu_id, $sala_id);
+            
    			$query = $db->getQuery(true);
 
    			$query->select($db->quoteName(array('id','sala_id','usu_id','reservado','msg','falacom_id','params','tempo')));
@@ -205,8 +245,6 @@ $input = Factory::getApplication()->input;
    			$db->setQuery($query);
                			
             $results = $db->loadObjectList();
-            
-            
             
             return $results;
            }
@@ -233,25 +271,36 @@ $input = Factory::getApplication()->input;
       $input = Factory::getApplication()->input;
          
          if($currentuser->get("id") > 0){
-   		try {  
+         
+   		try {
+         
+            $db = JFactory::getDbo();
+
+      		$querynow = $db->getQuery(true);
+
+      		$querynow->select('now() as now');
+      		
+      		$db->setQuery($querynow);
+                  			
+            $resultnow = $db->loadObjectList();
+         
             $usu_id = $currentuser->get("id");
-   			$date = new Date();
+
             $object = new stdClass();
             $object->id = $usu_id;
-            $object->tempo = $date->toSQL();
+            $object->tempo = $resultnow[0]->now;
 
    			$db = JFactory::getDbo();
-   			
-            $result = $db->updateObject('#__tabapapo_usu', $object, 'id');
-            
-            //DELETE users time out
+   			            
+            $delusers = $this->deleteUsers($sala_id);
+            $delmsgs = $this->deleteMsgs($sala_id);
             
             $query = $db->getQuery(true);
 
    			$query->select($db->quoteName(array('id','sala_id','usu_id','status','ip','params','tempo')));
    			$query->from($db->quoteName('#__tabapapo_usu'));
    			$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
-            $query->order($db->quoteName('tempo'), 'ASC');
+            $query->order($db->quoteName('params'), 'ASC');
             
    			$db->setQuery($query);
                			
@@ -278,117 +327,182 @@ $input = Factory::getApplication()->input;
 	   
       $currentuser = JFactory::getuser();
 
-  
+      if ($currentuser->get("id") > 0) {
+      
+		try {  
+      
+         $usu_id = $currentuser->get("id");
+         $usu_name = $currentuser->get("username");
+
+         $db = JFactory::getDbo();
+
+   		$querynow = $db->getQuery(true);
+
+   		$querynow->select('now() as now');
+   		
+   		$db->setQuery($querynow);
+               			
+         $result = $db->loadObjectList();
+
+         $db = JFactory::getDbo();
+
+			$query = $db->getQuery(true);
+
+			$query->select($db->quoteName(array('id','usu_id')));
+			$query->from($db->quoteName('#__tabapapo_usu'));
+			$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
+         $query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+
+			$db->setQuery($query);
+         $db->execute();
+         $num_rows = $db->getNumRows();
+			$results = $db->loadObjectlist();
          
-         if($currentuser->get("id") > 0){
-   		try {  
-            $usu_id = $currentuser->get("id");
-            $usu_name = $currentuser->get("username");
-   			$date = new Date();
+         if ($num_rows == 0) {
             
-   			// Create and populate an object.
-   			$usuchat = new stdClass();
+         	$usuchat = new stdClass();
    			$usuchat->sala_id = $sala_id;
    			$usuchat->usu_id = $usu_id;
    			$usuchat->status ='1';
    			$usuchat->params = $usu_name;
    			$usuchat->ip = $_SERVER["REMOTE_ADDR"];
-   			$usuchat->tempo = $date->toSQL();  //+30?
+   			$usuchat->tempo = $result[0]->now;
 
    			$resultusu = JFactory::getDbo()->insertObject('#__tabapapo_usu', $usuchat);
 
-   			$db = JFactory::getDbo();
+            $this->enviarMensagemSys($usuchat,1);
+         
+			}
 
-   			$query = $db->getQuery(true);
-
-   			$query->select($db->quoteName(array('id','usu_id')));
-   			$query->from($db->quoteName('#__tabapapo_usu'));
-   			$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
-
-   			$db->setQuery($query);
-
-   			$results = $db->loadObject();
-
-            return $results->id;
-           }
-           
-   		catch (Exception $e)
-   		{
-   			$msg = $e->getMessage();
-   			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
-   			$resultmsg = null;
-   		  }
-           
-      	}
-   		else {
-   			header('Location:index.php');
-   		}
-      
+         return $results->id;
+      }
+        
+		catch (Exception $e)
+		{
+			$msg = $e->getMessage();
+			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
+			$resultmsg = null;
+		  }
+        
+   	}
+		else {
+			header('Location:index.php');
+		}
+   
 
 	}
 
-   public function atualizarStatus($id, $status) {
 
-      // Create an object for the record we are going to update.
+
+   public function selectId($usu_id, $sala_id) {
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName(array('id','usu_id')));
+		$query->from($db->quoteName('#__tabapapo_usu'));
+		$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
+		$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+
+		$db->setQuery($query);
+
+		$results = $db->loadObjectList();
+
+      return $results;
+
+   }
+   
+   public function atualizarTempo($usu_id, $sala_id) {
+
+      $db = JFactory::getDbo();
+      
+      $id = $this->selectId($usu_id, $sala_id);
+
+      $db = JFactory::getDbo();
+
+		$querynow = $db->getQuery(true);
+
+		$querynow->select('now() as now');
+		
+		$db->setQuery($querynow);
+            			
+      $resultnow = $db->loadObjectList();
+
       $object = new stdClass();
 
-      // Must be a valid primary key value.
-      $object->id = $id;
+      $object->id = $id[0]->id;
+      $object->tempo = $resultnow[0]->now;
+
+      $result = $db->updateObject('#__tabapapo_usu', $object, 'id');
+
+      return true;
+
+   }
+
+   public function userstatusB($sala_id) {
+
+      $currentuser = JFactory::getuser();
+      $usu_id = $currentuser->get("id");
+      $db = JFactory::getDbo();
+      $id = $this->selectId($usu_id, $sala_id);
+            
+      $input = Factory::getApplication()->input;
+
+      $status = $input->get('st',0,'INT');
+            
+      $object = new stdClass();
+      $object->id = $id[0]->id;
       $object->status = $status;
 
-      // Update their details in the users table using id as the primary key.
-      $result = JFactory::getDbo()->updateObject('#__tabapapo_usu', $object, 'id');
-
+      $result = $db->updateObject('#__tabapapo_usu', $object, 'id');
       
+      return true;
+
    }
    
    public function atualizarParams($id, $params) {
 
-      // Create an object for the record we are going to update.
       $object = new stdClass();
 
-      // Must be a valid primary key value.
       $object->id = $id;
       $object->params = $params;
 
-      // Update their details in the users table using id as the primary key.
       $result = JFactory::getDbo()->updateObject('#__tabapapo_usu', $object, 'id');
 
-      
    }
    
 	public function  sairSalaB($sala_id) {
 	   
       $currentuser = JFactory::getuser();
-      
-         if($currentuser->get("id") > 0){
+      $usu_id = $currentuser->get("id");
+      $usu_name = $currentuser->get("username");;
+         
+      if ($usu_id > 0) {
    		try {      
       
-      $db = JFactory::getDbo();
-
-		$query = $db->getQuery(true);
-
-		$conditions = array($db->quoteName('usu_id').' = '. $currentuser->get("id"),
-                          $db->quoteName('sala_id').' = '. $sala_id);
-
-		$query->delete($db->quoteName('#__tabapapo_usu'));
-		$query->where($conditions);
-
-		$db->setQuery($query);
-		$result = $db->execute();
-
-            $userout = ["sala_id" => $sala_id,
-                        "msg" => 'saiu na sala.',
-                        "privado" => 0,
-                        "falacom_id" => 0,
-                        "params" => ''];
+            $db = JFactory::getDbo();
             
-            $this->enviarMensagem($userout);
+            $id = $this->selectId($usu_id, $sala_id);
 
-//      $this->enviarMsg($sala_id, $this->results->usu_id, 'saiu da sala', 0, 0, '');
-      
-      
-      return true;	
+      		$query = $db->getQuery(true);
+
+      		$conditions = array($db->quoteName('id').' = '. $id[0]->id);
+
+      		$query->delete($db->quoteName('#__tabapapo_usu'));
+      		$query->where($conditions);
+
+      		$db->setQuery($query);
+      		$result = $db->execute();
+
+            $userout = new stdClass();
+            $userout->sala_id = $sala_id;
+            $userout->privado = 0;
+            $userout->falacom_id = 0;
+            $userout->params = $usu_name;
+            
+            $msg = $this->enviarMensagemSys($userout, 2); //msg type 2 exit
+
+         return true;	
 
            }
            
@@ -407,27 +521,87 @@ $input = Factory::getApplication()->input;
 	}
 
 
+	public function  deleteUsers($sala_id) {
 
-//colocar na view revisar
+		try {      
+   
+         $db = JFactory::getDbo();
+         
+         $querylist = $db->getQuery(true);
+         
+         $querylist->select($db->quoteName(array('id','sala_id','usu_id','status','ip','params','tempo')));
+			$querylist->from($db->quoteName('#__tabapapo_usu'));
+			$querylist->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+   		$querylist->where('timestampdiff(second, tempo, now()) > 30');
+         
+         $db->setQuery($querylist);
+         $db->execute();
+         
+         $num_rows = $db->getNumRows();
+         $results = $db->loadObjectList();
+         
+         $db = JFactory::getDbo();
+         
+   		$query = $db->getQuery(true);
 
-   public function getenviaParams()
-	{
-		if ($this->item) 
+   		$query->delete($db->quoteName('#__tabapapo_usu'));
+   		$query->where('timestampdiff(second, tempo, now()) > 30');
+
+   		$db->setQuery($query);
+   		$result = $db->execute();
+
+         if ($num_rows > 0) {
+            
+            for ($i = 0; $i < $num_rows; $i++) {
+            
+               $userout = new stdClass();
+               $userout->sala_id = $sala_id;
+               $userout->privado = 0;
+               $userout->falacom_id = 0;
+               $userout->params = $results[$i]->params;
+
+               $msgout = $this->enviarMensagemSys($userout,2);
+               
+            }
+         }
+         return true;	
+
+        }
+        
+		catch (Exception $e)
 		{
-			$this->enviaParams = array(
-				'id' => $this->item->id,
-				'title' => $this->item->title,
-				'zoom' => 10,
-				'category' => $this->item->category
-			);
-			return $this->enviaParams; 
-		}
-		else
+			$msg = $e->getMessage();
+			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
+			$resultmsg = null;
+		  }
+
+	}
+   
+	public function  deleteMsgs($sala_id) {
+	   
+		try {      
+   
+         $db = JFactory::getDbo();
+         
+   		$query = $db->getQuery(true);
+
+   		$query->delete($db->quoteName('#__tabapapo_msg'));
+   		$query->where('timestampdiff(second, tempo, now()) > 300');
+
+   		$db->setQuery($query);
+   		$result = $db->execute();
+
+         return true;	
+
+        }
+        
+		catch (Exception $e)
 		{
-			throw new Exception('No enviaParams details available for map', 500);
-		}
+			$msg = $e->getMessage();
+			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
+			$resultmsg = null;
+		  }
+
 	}
 
-
-   
 }
