@@ -42,8 +42,7 @@ abstract class TabaPapoHelper extends JHelperContent
 
 		// Set some global property
 		$document = JFactory::getDocument();
-		$document->addStyleDeclaration('.icon-48-tabapapo ' .
-										'{background-image: url(../media/com_tabapapo/images/tux-48x48.png);}');
+		//$document->addStyleDeclaration('.icon-48-tabapapo {background-image: url(../media/com_tabapapo/images/tux-48x48.png);}');
 		if ($submenu == 'categories') 
 		{
 			$document->setTitle(JText::_('COM_TABAPAPO_ADMINISTRATION_CATEGORIES'));

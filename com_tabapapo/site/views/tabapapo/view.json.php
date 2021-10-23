@@ -26,29 +26,11 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$input = JFactory::getApplication()->input;
-		$form = $input->post->get('jform', array(), 'array');
-		$model = $this->getModel();
-		if ($form)
-		{
-			$records = $model->enviarMensagem($form);
-			if ($records) 
-			{
-				echo new JResponseJson($records);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$records = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_MAP_BOUNDS'), true);
-		}
+      $this->item = $this->get('Item');
+      
+      parent::display($tpl);
 	}
 	
-
    
 }
 

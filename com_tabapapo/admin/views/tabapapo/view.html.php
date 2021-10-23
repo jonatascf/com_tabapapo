@@ -9,11 +9,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
+use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\GenericDataException;
+use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Toolbar\ToolbarHelper;
+
+
 class TabaPapoViewTabaPapo extends JViewLegacy
 {
 	protected $form;
 	protected $item;
-	protected $script;
+   protected $state;
 	protected $canDo;
 
 	/**
@@ -28,7 +38,7 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
+		$this->script = $this->get('State');
 
 
 		// What Access Permissions does this user have? What can (s)he do?
@@ -37,7 +47,7 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			throw new Exception(implode("\n", $errors), 500);
+			throw new GenericDataException(implode("\n", $errors), 500);
 		}
 
 
@@ -60,57 +70,88 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 	 */
 	protected function addToolBar()
 	{
-		$input = JFactory::getApplication()->input;
+		
+      Factory::getApplication()->input->set('hidemainmenu', true);
+      
+  		$user       = Factory::getUser();
+		$userId     = $user->id;
+		$isNew      = ($this->item->id == 0);
+		$checkedOut = !(is_null($this->item->checked_out) || $this->item->checked_out == $userId);
 
-		// Hide Joomla Administrator Main menu
-		$input->set('hidemainmenu', true);
+		// Since we don't track these assets at the item level, use the category id.
+		$canDo = ContentHelper::getActions('com_contact', 'category', $this->item->catid);
 
-		$isNew = ($this->item->id == 0);
 
-		JToolBarHelper::title($isNew ? JText::_('COM_TABAPAPO_MANAGER_TABAPAPO_NEW')
-		                             : JText::_('COM_TABAPAPO_MANAGER_TABAPAPO_EDIT'), 'tabapapo');
+		ToolBarHelper::title($isNew ? Text::_('COM_TABAPAPO_MANAGER_TABAPAPO_NEW')
+		                            : Text::_('COM_TABAPAPO_MANAGER_TABAPAPO_EDIT'), 'tabapapo');
 
 		if ($isNew)
 		{
 			// For new records, check the create permission.
-			if ($this->canDo->get('core.create')) 
+			if (count($user->getAuthorisedCategories('com_tabapapo', 'core.create')) > 0) 
 			{
-				JToolBarHelper::apply('tabapapo.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('tabapapo.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom('tabapapo.save2new', 'save-new.png', 'save-new_f2.png',
-				                       'JTOOLBAR_SAVE_AND_NEW', false);
+				ToolBarHelper::apply('tabapapo.apply');
+				
+				ToolbarHelper::saveGroup(
+					[
+						['save', 'tabapapo.save'],
+						['save2new', 'tabapapo.save2new']
+					],
+					'btn-success'
+				);
 			}
-			JToolBarHelper::cancel('tabapapo.cancel', 'JTOOLBAR_CANCEL');
+         
+			ToolBarHelper::cancel('tabapapo.cancel');
+         
 		}
 		else
 		{
-			if ($this->canDo->get('core.edit'))
+			// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+			$itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId);
+
+			$toolbarButtons = [];
+
+			// Can't save the record if it's checked out and editable
+			if (!$checkedOut && $itemEditable)
 			{
-				// We can save the new record
-				JToolBarHelper::apply('tabapapo.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('tabapapo.save', 'JTOOLBAR_SAVE');
- 
-				// We can save this record, but check the create permission to see
-				// if we can return to make a new one.
-				if ($this->canDo->get('core.create')) 
+				ToolbarHelper::apply('tabapapo.apply');
+
+				$toolbarButtons[] = ['save', 'tabapapo.save'];
+
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create'))
 				{
-					JToolBarHelper::custom('tabapapo.save2new', 'save-new.png', 'save-new_f2.png',
-					                       'JTOOLBAR_SAVE_AND_NEW', false);
-				}
- 				$config = JFactory::getConfig();
-				$save_history = $config->get('save_history', true);
-				if ($save_history) 
-				{
-					JToolbarHelper::versions('com_tabapapo.tabapapo', $this->item->id);
+					$toolbarButtons[] = ['save2new', 'tabapapo.save2new'];
 				}
 			}
-			if ($this->canDo->get('core.create')) 
+
+			// If checked out, we can still save
+			if ($canDo->get('core.create'))
 			{
-				JToolBarHelper::custom('tabapapo.save2copy', 'save-copy.png', 'save-copy_f2.png',
-				                       'JTOOLBAR_SAVE_AS_COPY', false);
+				$toolbarButtons[] = ['save2copy', 'tabapapo.save2copy'];
 			}
-			JToolBarHelper::cancel('tabapapo.cancel', 'JTOOLBAR_CLOSE');
+
+			ToolbarHelper::saveGroup(
+				$toolbarButtons,
+				'btn-success'
+			);
+
+			ToolbarHelper::cancel('tabapapo.cancel', 'JTOOLBAR_CLOSE');
+
+			/*if (ComponentHelper::isEnabled('com_contenthistory') && $this->state->params->get('save_history', 0) && $itemEditable)
+			{
+				ToolbarHelper::versions('com_tabapapo.chatroom', $this->item->id);
+			}*/
+
+			if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations'))
+			{
+				ToolbarHelper::custom('tabapapo.editAssociations', 'contract', '', 'JTOOLBAR_ASSOCIATIONS', false, false);
+			}
 		}
+
+		ToolbarHelper::divider();
+		ToolbarHelper::help('JHELP_COMPONENTS_TABAPAPOS_TABAPAPOS_EDIT');
+      
 	}
 	
 	/**
@@ -124,7 +165,6 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_TABAPAPO_TABAPAPO_CREATING')
 		                           : JText::_('COM_TABAPAPO_TABAPAPO_EDITING'));
-		$document->addScript(JURI::root() . $this->script);
 		$document->addScript(JURI::root() . "/administrator/components/com_tabapapo"
 		                                  . "/views/tabapapo/submitbutton.js");
 		JText::script('COM_TABAPAPO_TABAPAPO_ERROR_UNACCEPTABLE');

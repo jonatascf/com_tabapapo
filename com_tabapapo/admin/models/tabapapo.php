@@ -13,22 +13,15 @@ use Joomla\Registry\Registry;
 
 class TabaPapoModelTabaPapo extends JModelAdmin
 {
-    /**
-	 * Method to override getItem to allow us to convert the JSON-encoded image information
-	 * in the database record into an array for subsequent prefilling of the edit form
-	 */
     
-   	// Contenthistory needs to know this for restoring previous versions
+  	// Contenthistory needs to know this for restoring previous versions
+
 	public $typeAlias = 'com_tabapapo.tabapapo';
    
 	public function getItem($pk = null) {
    
 		$item = parent::getItem($pk);
-		if ($item AND property_exists($item, 'imagem'))
-		{
-			$registry = new Registry($item->imagem);
-			$item->imageminfo = $registry->toArray();
-		}
+
 		return $item; 
 	}
 	/**

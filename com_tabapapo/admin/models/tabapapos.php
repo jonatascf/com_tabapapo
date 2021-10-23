@@ -24,11 +24,24 @@ class TabaPapoModelTabaPapos extends JModelList
 		if (empty($config['filter_fields']))
 		{
 			$config['filter_fields'] = array(
-				'id',
-				'title',
-            'created_by',
-            'created',
-				'published'
+				'id', 'a.id',
+				'title', 'a.title',
+				'alias', 'a.alias',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'catid', 'a.catid', 'category_id', 'category_title',
+				'access', 'a.access', 'access_level',
+				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
+				'language', 'a.language', 'language_title',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
+				'published', 'a.published',
+            'hits', 'a.hits',
+				'tag',
+				'level', 'c.level',
 			);
 		}
 
@@ -47,7 +60,7 @@ class TabaPapoModelTabaPapos extends JModelList
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
-		$query->select('a.id as id, a.title as title, a.published as published, a.created as created, a.imagem as imagemInfo')
+		$query->select('a.id as id, a.title as title, a.alias as alias, a.published as published, a.created as created, a.hits as hits')
 			  ->from($db->quoteName('#__tabapapo', 'a'));
 
 		// Join over the categories.

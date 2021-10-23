@@ -27,12 +27,12 @@ JHtml::_('behavior.formvalidator');
     
 	<div class="btn-toolbar">
 		<div class="btn-group">
-			<button type="button" class="btn btn-primary" onclick="Joomla.submitbutton('tabapapo.save')">
+			<button type="button" class="btn btn-primary" onclick="submitbutton('tabapapo.save');">
 				<span class="icon-ok"></span><?php echo JText::_('JSAVE') ?>
 			</button>
 		</div>
 		<div class="btn-group">
-			<button type="button" class="btn" onclick="Joomla.submitbutton('tabapapo.cancel')">
+			<button type="button" class="btn" onclick="submitbutton('tabapapo.cancel');">
 				<span class="icon-cancel"></span><?php echo JText::_('JCANCEL') ?>
 			</button>
 		</div>

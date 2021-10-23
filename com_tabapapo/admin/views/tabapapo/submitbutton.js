@@ -1,4 +1,6 @@
-Joomla.submitbutton = function(task)
+
+
+function submitbutton (task)
 {
 	if (task == '')
 	{
@@ -6,11 +8,11 @@ Joomla.submitbutton = function(task)
 	}
 	else
 	{
-		var isValid=true;
+		var isValid = true;
 		var action = task.split('.');
 		if (action[1] != 'cancel' && action[1] != 'close')
 		{
-			var forms = jQuery('form.form-validate');
+			var forms = document.getElementById("adminForm");
 			for (var i = 0; i < forms.length; i++)
 			{
 				if (!document.formvalidator.isValid(forms[i]))
@@ -23,12 +25,12 @@ Joomla.submitbutton = function(task)
 	
 		if (isValid)
 		{
-			Joomla.submitform(task);
+			submitform(task);
 			return true;
 		}
 		else
 		{
-			alert(Joomla.JText._('COM_TABAPAPO_TABAPAPO_ERROR_UNACCEPTABLE',
+			alert(JText._('COM_TABAPAPO_TABAPAPO_ERROR_UNACCEPTABLE',
 			                     'Some values are unacceptable'));
 			return false;
 		}

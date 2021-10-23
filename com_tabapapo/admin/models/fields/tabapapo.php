@@ -32,11 +32,12 @@ class JFormFieldTabaPapo extends JFormFieldList
 	{
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
-		$query->select('#__tabapapo.id as id,#__tabapapo.title as title,#__categories.title as category,catid');
-		$query->from('#__tabapapo');
-		$query->leftJoin('#__categories on catid=#__categories.id');
+		$query->select('h.id, h.title, h.created, h.created_by, h.params, c.title as category,
+                         h.alias, h.catid, h.description, h.asset_id, h.published, h.params');
+		$query->from('#__tabapapo as h');
+		$query->leftJoin('#__categories as c on h.catid=c.id');
 		// Retrieve only published items
-		$query->where('#__tabapapo.published = 1');
+		$query->where('h.published = 1');
 		$db->setQuery((string) $query);
 		$messages = $db->loadObjectList();
 		$options  = array();

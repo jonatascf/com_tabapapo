@@ -8,75 +8,106 @@
 **/
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('behavior.formvalidator');
+use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Language\Associations;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\Router\Route;
+use Joomla\Registry\Registry;
 
-// The following is to enable setting the permission's Calculated Setting 
-// when you change the permission's Setting. 
-// The core javascript code for initiating the Ajax request looks for a field
-// with id="jform_title" and sets its value as the 'title' parameter to send in the Ajax request
-JFactory::getDocument()->addScriptDeclaration('
-jQuery(document).ready(function() {
-        title = jQuery("#jform_title").val();
-		jQuery("#jform_title2").val(title);
-	});
-');
+/** @var Joomla\CMS\WebAsset\WebAssetManager $wa */
+$wa = $this->document->getWebAssetManager();
+$wa->useScript('keepalive')
+	->useScript('form.validate');
+
+$app = Factory::getApplication();
+$input = $app->input;
+
+$assoc = Associations::isEnabled();
+
+// Fieldsets to not automatically render by /layouts/joomla/edit/params.php
+$this->ignore_fieldsets = ['item_associations', 'jmetadata'];
+$this->useCoreUI = true;
+
+// In case of modal
+//$isModal = $input->get('layout') === 'modal';
+//$layout  = $isModal ? 'modal' : 'edit';
+//$tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_tabapapo&layout=edit&id=' . (int) $this->item->id); ?>"
-    method="post" name="adminForm" id="adminForm" class="form-validate">
-    <input id="jform_title2" type="hidden" name="tabapapo-message-title"/>
-    <div class="form-horizontal">
-    <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', 
-        empty($this->item->id) ? JText::_('COM_TABAPAPO_TAB_NEW_MESSAGE') : JText::_('COM_TABAPAPO_TAB_EDIT_MESSAGE')); ?>
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_TABAPAPO_LEGEND_DETAILS') ?></legend>
-            <div class="row-fluid">
-                <div class="span3">
-                    <?php echo $this->form->renderFieldset('details');  ?>
-                </div>
-                <div class="span9">
-                    <?php echo $this->form->getInput('description');  ?>
-                </div>
-            </div>
-        </fieldset>
-    <?php echo JHtml::_('bootstrap.endTab'); ?>
+      method="post" 
+      name="adminForm" 
+      id="item-form" 
+      aria-label="<?php echo Text::_('COM_TABAPAPO_FORM_TITLE_' . ((int) $this->item->id === 0 ? 'NEW' : 'EDIT'), true); ?>"
+      class="form-validate">
 
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'imagem', JText::_('COM_TABAPAPO_TAB_IMAGE')); ?>
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_TABAPAPO_LEGEND_IMAGE') ?></legend>
-            <div class="row-fluid">
-                <div class="span6">
-                    <?php echo $this->form->renderFieldset('imagem-info');  ?>
-                </div>
-            </div>
-        </fieldset>
-    <?php echo JHtml::_('bootstrap.endTab'); ?>
+   <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>   
 
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'params', JText::_('COM_TABAPAPO_TAB_PARAMS')); ?>
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_TABAPAPO_LEGEND_PARAMS') ?></legend>
-            <div class="row-fluid">
-                <div class="span6">
-                    <?php echo $this->form->renderFieldset('params');  ?>
-                </div>
-            </div>
-        </fieldset>
-    <?php echo JHtml::_('bootstrap.endTab'); ?>
+   <div class="main-card">
 
-    <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'permissions', JText::_('COM_TABAPAPO_TAB_PERMISSIONS')); ?>
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_TABAPAPO_LEGEND_PERMISSIONS') ?></legend>
-            <div class="row-fluid">
-                <div class="span12">
-                    <?php echo $this->form->renderFieldset('accesscontrol');  ?>
-                </div>
-            </div>
-        </fieldset>
-    <?php echo JHtml::_('bootstrap.endTab'); ?>
-    <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+   <?php echo HTMLHelper::_('uitab.startTabSet', 'myTab', array('active' => 'details')); ?>
+   <?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'details', 
+        empty($this->item->id) ? Text::_('COM_TABAPAPO_TAB_NEW_MESSAGE') : Text::_('COM_TABAPAPO_TAB_EDIT_MESSAGE')); ?>
 
+    <div class="row">
+      <div class="col-lg-9">
+         <div class="col-lg-6">
+         <fieldset class="adminform">
+				<legend><?php echo $this->form->getLabel('description'); ?></legend>
+				<?php echo $this->form->getInput('description'); ?>
+         </fieldset>
+         </div>
+      </div>
+      <div class="col-lg-3">
+         <?php echo LayoutHelper::render('joomla.edit.global', $this); ?>
+		</div>
     </div>
-    <input type="hidden" name="task" value="tabapapo.edit" />
-    <?php echo JHtml::_('form.token'); ?>
+    <?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+      <?php echo LayoutHelper::render('joomla.edit.params', $this); ?>
+
+		<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'publishing', Text::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
+		<div class="row">
+			<div class="col-md-6">
+				<fieldset id="fieldset-publishingdata" class="options-form">
+					<legend><?php echo Text::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></legend>
+					<div>
+						<?php echo LayoutHelper::render('joomla.edit.publishingdata', $this); ?>
+					</div>
+				</fieldset>
+			</div>
+			<div class="col-md-6">
+				<fieldset id="fieldset-metadata" class="options-form">
+					<legend><?php echo Text::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'); ?></legend>
+					<div>
+						<?php echo LayoutHelper::render('joomla.edit.metadata', $this); ?>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<?php echo HTMLHelper::_('uitab.endTab'); ?>
+
+		<?php if (!$isModal && $assoc) : ?>
+			<?php echo HTMLHelper::_('uitab.addTab', 'myTab', 'associations', Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS')); ?>
+			<fieldset id="fieldset-associations" class="options-form">
+				<legend><?php echo Text::_('JGLOBAL_FIELDSET_ASSOCIATIONS'); ?></legend>
+				<div>
+					<?php echo LayoutHelper::render('joomla.edit.associations', $this); ?>
+				</div>
+			</fieldset>
+			<?php echo HTMLHelper::_('uitab.endTab'); ?>
+		<?php elseif ($isModal && $assoc) : ?>
+			<div class="hidden"><?php echo LayoutHelper::render('joomla.edit.associations', $this); ?></div>
+		<?php endif; ?>
+
+    <?php echo HTMLHelper::_('uitab.endTabSet'); ?>
+
+    <input type="hidden" name="task" value="" />
+	<input type="hidden" name="forcedLanguage" value="<?php echo $input->get('forcedLanguage', '', 'cmd'); ?>">
+    <?php echo HTMLHelper::_('form.token'); ?>
+
+   </div>
+
 </form>

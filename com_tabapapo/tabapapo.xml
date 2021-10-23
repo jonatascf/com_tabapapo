@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.9" method="upgrade">
+<extension type="component" version="4.0" method="upgrade">
 
 	<name>COM_TABAPAPO</name>
 	
-	<creationDate>December 2021</creationDate>
+	<creationDate>October 2021</creationDate>
 	<author>Jonatas C. Ferreira</author>
 	<authorEmail>jonatas@tabaoca.org</authorEmail>
 	<authorUrl>https://tabaoca.org</authorUrl>
 	<copyright>Copyright (C) 2021 Tabaoca. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
+	<creativecommons>Dices D4, D6, D8, D10, D12, D20 by Lonnie Tapscott from the Noun Project</creativecommons>
 
-	<version>0.8.5</version>
+	<version>0.9.0</version>
 
 	<description>COM_TABAPAPO_DESCRIPTION</description>
-
+	<namespace path="src">Joomla\Component\Tabapapo</namespace>
 	<scriptfile>script.php</scriptfile>
 
 	<install>
@@ -55,7 +56,13 @@
 	</media>
 
 	<administration>
-		<menu link='index.php?option=com_tabapapo' img="../media/com_tabapapo/images/tux-16x16.png">COM_TABAPAPO_MENU</menu>
+		<menu link="class:address-book">COM_TABAPAPO_MENU</menu>
+		<submenu>
+			<menu link="option=com_tabapapo" img="class:tabapapo"
+				alt="Tabapapo/Tabapapos">COM_TABAPAPO_TABAPAPOS</menu>
+			<menu link="option=com_categories&amp;extension=com_tabapapo"
+				view="categories" img="class:tabapapo-cat" alt="Tabapapos/Categories">COM_TABAPAPO_CATEGORIES</menu>
+		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>
 			<filename>tabapapo.php</filename>

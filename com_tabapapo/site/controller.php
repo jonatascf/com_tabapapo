@@ -14,6 +14,48 @@ use Joomla\CMS\Factory;
 class TabaPapoController extends JControllerLegacy
 {
 
+   public function salaEntrar() {
+      
+      if (!JSession::checkToken('get')) 
+        {
+            echo new JResponseJson(null, JText::_('JINVALID_TOKEN'), true);
+        }
+        else 
+        {
+
+            //parent::Display();
+
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');               
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            //$sala_id = $item->id;
+            $sala_id = $input->get('sala_id', 0, 'INT');
+            
+            
+      		if ($sala_id)
+      		{
+      			$record = $model->entrarSalaB($sala_id);
+      			if ($record) 
+      			{
+      				echo new JResponseJson($record);
+      			}
+      			else
+      			{
+      				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+      			}
+      		}
+      		else 
+      		{
+      			$record = array();
+      			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+      		}
+
+            
+        }
+   }
+
+
     public function mensagemEnviar() {
     
         if (!JSession::checkToken('get')) 
@@ -23,7 +65,30 @@ class TabaPapoController extends JControllerLegacy
         else 
         {
 
-            parent::display();
+            //parent::display();
+            
+                   
+            $input = JFactory::getApplication()->input;
+       		$form = $input->post->get('jform', array(), 'array');
+       		$model = $this->getModel();
+       		if ($form)
+       		{
+       			$records = $model->enviarMensagem($form);
+       			if ($records) 
+       			{
+       				echo new JResponseJson($records);
+       			}
+       			else
+       			{
+       				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+       			}
+       		}
+       		else 
+       		{
+       			$records = array();
+       			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_MAP_BOUNDS'), true);
+       		}
+      
         }
     }
 
@@ -36,7 +101,35 @@ class TabaPapoController extends JControllerLegacy
         else 
         {
 
-            $this->getmsgsler();
+            //parent::getmsgsler();
+            
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            //$item = $form->sala_id;
+            $sala_id = $input->get('sala_id', 0, 'int');
+            $lmsg_id = $input->get('lmsg_id', 0, 'int');
+            
+      		if ($sala_id)
+      		{
+      			$records = $model->msgslerB($sala_id, $lmsg_id);
+               
+      			if ($records) 
+      			{
+      				echo new JResponseJson($records);
+      			}
+      			else
+      			{
+      				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+      			}
+      		}
+      		else 
+      		{
+      			$records = array();
+      			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+      		}
+
         }
     }
 
@@ -49,7 +142,34 @@ class TabaPapoController extends JControllerLegacy
         else 
         {
 
-            $this->getusersler();
+            //parent::getusersler();
+            
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            //$item = $form->sala_id;
+            $sala_id = $input->get('sala_id', 0, 'int');
+                        
+      		if ($sala_id)
+      		{
+      			$records = $model->userslerB($sala_id);
+               
+      			if ($records) 
+      			{
+      				echo new JResponseJson($records);
+      			}
+      			else
+      			{
+      				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+      			}
+      		}
+      		else 
+      		{
+      			$records = array();
+      			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+      		}
+      
         }
     }
 
@@ -62,11 +182,80 @@ class TabaPapoController extends JControllerLegacy
         else 
         {
 
-            $this->getuserstatus();
+            //parent::getuserstatus();
+            
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');                   
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            $sala_id = $input->get('sala_id', 0, 'INT');
+            $status = $input->get('status', 0, 'INT');
+                         
+       		if ($sala_id)
+       		{
+       			$records = $model->statususer($sala_id, $status);
+                
+       			if ($records) 
+       			{
+       				echo new JResponseJson($records);
+       			}
+       			else
+       			{
+       				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+       			}
+       		}
+       		else 
+       		{
+       			$records = array();
+       			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+       		}
+
         }
     }
 
-   public function salaEntrar() {
+
+    public function rolldice() {
+    
+        if (!JSession::checkToken('get')) 
+        {
+            echo new JResponseJson(null, JText::_('JINVALID_TOKEN'), true);
+        }
+        else 
+        {
+
+            //parent::getuserstatus();
+            
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');                   
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            $sala_id = $input->get('sala_id', 0, 'INT');
+            $dice = $input->get('dice', 0, 'INT');
+                         
+       		if ($sala_id)
+       		{
+       			$records = $model->diceroll($sala_id, $dice);
+                
+       			if ($records) 
+       			{
+       				echo new JResponseJson($records);
+       			}
+       			else
+       			{
+       				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+       			}
+       		}
+       		else 
+       		{
+       			$records = array();
+       			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+       		}
+
+        }
+    }
+
+
+   public function exitRoom() {
       
       if (!JSession::checkToken('get')) 
         {
@@ -75,149 +264,35 @@ class TabaPapoController extends JControllerLegacy
         else 
         {
 
-            $this->getinDisplay();
+            //parent::getoutDisplay();
+
+            $input = JFactory::getApplication()->input;
+       		//$form = $input->post->get('jform', array(), 'array');             
+            $model = $this->getModel();
+            //$item = $model->getitem();
+            $sala_id = $input->get('sala_id', 0, 'INT');
+            
+      		if ($sala_id)
+      		{
+      			$record = $model->roomExit($sala_id);
+      			if ($record) 
+      			{
+      				echo new JResponseJson($record);
+      			}
+      			else
+      			{
+      				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
+      			}
+      		}
+      		else 
+      		{
+      			$record = array();
+      			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
+      		}
+
         }
+
    }
 
-
-   public function salaSair() {
-      
-      if (!JSession::checkToken('get')) 
-        {
-            echo new JResponseJson(null, JText::_('JINVALID_TOKEN'), true);
-        }
-        else 
-        {
-
-            $this->getoutDisplay();
-        }
-   }
-
- 	public function getmsgsler()
-	{
-		$model = $this->getModel();
-      $item = $model->getitem();
-		if ($item->id > 0)
-		{
-			$records = $model->msgslerB($item->id);
-         
-			if ($records) 
-			{
-				echo new JResponseJson($records);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$records = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
-		}
-	}   
-
- 	public function getusersler()
-	{
-
-		$model = $this->getModel();
-      $item = $model->getitem();
-      
-		if ($item->id > 0)
-		{
-			$records = $model->userslerB($item->id);
-         
-			if ($records) 
-			{
-				echo new JResponseJson($records);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$records = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
-		}
-
-	}   
-   
-    	public function getuserstatus()
-	{
-
-		$model = $this->getModel();
-      $item = $model->getitem();
-      
-		if ($item->id > 0)
-		{
-			$records = $model->userstatusB($item->id);
-         
-			if ($records) 
-			{
-				echo new JResponseJson($records);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$records = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
-		}
-
-	}   
-   
- 	public function getinDisplay()
-	{
-
-		$model = $this->getModel();
-      $item = $model->getitem();
-		if ($item->id > 0)
-		{
-			$record = $model->entrarSalaB($item->id);
-			if ($record) 
-			{
-				echo new JResponseJson($record);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$record = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
-		}
-	}   
-
-
- 	public function getoutDisplay()
-	{
-
-		$model = $this->getModel();
-      $item = $model->getitem();
-		if ($item->id > 0)
-		{
-			$record = $model->sairSalaB($item->id);
-			if ($record) 
-			{
-				echo new JResponseJson($record);
-			}
-			else
-			{
-				echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_RECORDS'), true);
-			}
-		}
-		else 
-		{
-			$record = array();
-			echo new JResponseJson(null, JText::_('COM_TABAPAPO_ERROR_NO_CHAT_BOUNDS'), true);
-		}
-	}   
 
 }

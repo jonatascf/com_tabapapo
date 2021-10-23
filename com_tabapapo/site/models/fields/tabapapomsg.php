@@ -38,7 +38,7 @@ class JFormFieldTabaPapoMsg extends JFormFieldList
                      #__tabapapo_msg.falacom_id as falacom_id, #__tabapapo_msg.tempo as tempo');
 		$query->from('#__tabapapo_msg', '#__tabapapo');
 		$query->leftJoin('#__tabapapo on sala_id=#__tabapapo.id');
-		// Retrieve only published items
+
 		$db->setQuery((string) $query);
 		$messages = $db->loadObjectList();
 		$options  = array();
