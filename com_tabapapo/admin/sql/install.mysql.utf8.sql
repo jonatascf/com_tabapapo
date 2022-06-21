@@ -3,7 +3,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `#__tabapapo` (
     `id` int unsigned NOT NULL AUTO_INCREMENT,
-    `asset_id` int unsigned NOT NULL DEFAULT 0 COMMENT 'FK to the #__assets table.',
+    `asset_id` int unsigned NOT NULL DEFAULT 0,
     `title` varchar(255) NOT NULL DEFAULT '',
     `alias` varchar(400) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '',
     `description` VARCHAR(4000) NOT NULL DEFAULT '',

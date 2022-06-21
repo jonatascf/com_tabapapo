@@ -10,21 +10,57 @@
 			type="radio"
 			label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_LABEL"
 			description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_DESC"
+			readonly="true"
 			default="0"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-    <field
-				name="show_dices"
-				type="radio"
-				label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICES_LABEL"
-				description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICES_DESC"
-				default="0"
+		
+		<field
+			name="show_dice"
+			type="radio"
+			label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICE_LABEL"
+			description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICE_DESC"
+			readonly="true"
+			default="0"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		
+		<field
+			name="show_private"
+			type="radio"
+			label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_PRIVATE_LABEL"
+			description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_PRIVATE_DESC"
+			readonly="true"
+			default="0"
+		>
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+
+		<field
+			name="users_limit"
+			type="radio"
+			label="COM_TABAPAPO_TABAPAPO_FIELD_USERS_LIMIT_LABEL"
+			description="COM_TABAPAPO_TABAPAPO_FIELD_USERS_LIMIT_DESC"
+			readonly="true"
+			default="10"
+		>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+				<option value="64">64</option>
+		</field>
+
 		<field
 			name="captcha"
 			type="plugins"

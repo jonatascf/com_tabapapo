@@ -31,21 +31,21 @@
 			hint="JFIELD_ALIAS_PLACEHOLDER"
 			size="45"
 		/>
-    <field
-        name="description" 
-				type="textarea"
-				label="COM_TABAPAPO_TABAPAPO_FIELD_DESCRIPTION_LABEL" 
-        cols="30"
-        rows="3"
+		<field
+			name="description" 
+			type="textarea"
+			label="COM_TABAPAPO_FIELD_DESCRIPTION_LABEL" 
+			cols="30"
+			rows="3"
 		/>  
 		<field
-				name="catid"
-				type="categoryedit"
-				extension="com_tabapapo"
-				default=""
-        addfieldprefix="Joomla\Component\Categories\Administrator\Field"
-      	label="JCATEGORY"
-				required="true"
+			name="catid"
+			type="categoryedit"
+			extension="com_tabapapo"
+			default=""
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
+			label="JCATEGORY"
+			required="true"
 		/>
 
 		<field
@@ -206,13 +206,13 @@
 	<fields name="params">
 		<fieldset
 				name="display"
-				label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+				label="COM_TABAPAPO_TAB_DISPLAY_OPTIONS"
 		>
 			<field
 					name="show_category"
 					type="list"
-					label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_LABEL"
-					description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_DESC"
+					label="COM_TABAPAPO_FIELD_SHOW_CATEGORY_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_CATEGORY_DESC"
 					default=""
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -220,29 +220,59 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
-      <field
-					name="show_dices"
+			<field
+					name="show_dice"
 					type="list"
-					label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICES_LABEL"
-					description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICES_DESC"
+					label="COM_TABAPAPO_FIELD_SHOW_DICE_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_DICE_DESC"
 					default=""
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			<field
+					name="show_private"
+					type="list"
+					label="COM_TABAPAPO_FIELD_SHOW_PRIVATE_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_PRIVATE_DESC"
+					default=""
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field
+					name="users_limit"
+					type="list"
+					label="COM_TABAPAPO_TABAPAPO_ADD_USERS_LIMIT_LABEL"
+					description="COM_TABAPAPO_TABAPAPO_ADD_USERS_LIMIT_DESC"
+					default=""
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+				<option value="64">64</option>
+			</field>
 
 		</fieldset>
 	</fields>
 	
-	<fields name="metadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+	<fields name="metadata" label="COM_TABAPAPO_METADATA_OPTIONS">
 		<fieldset name="jmetadata"
-				  label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+				  label="COM_TABAPAPO_METADATA_OPTIONS">
 
 			<field
 				name="robots"
 				type="list"
-				label="JFIELD_METADATA_ROBOTS_LABEL"
+				label="COM_TABAPAPO_METADATA_ROBOTS_LABEL"
 				validate="options"
 				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>

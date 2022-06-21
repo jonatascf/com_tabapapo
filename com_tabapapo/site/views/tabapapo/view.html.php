@@ -31,18 +31,21 @@ class TabaPapoViewTabaPapo extends JViewLegacy
       
       // Assign data to the view
 		$this->item = $this->get('Item');
+		
+		$this->options = $this->get('Options');
       
-	//	$this->form = $this->get('Form');
+		//$this->table = $this->get('Table');
 
-		if (!$this->form = $this->get('form'))
+		/*if (!$this->form = $this->get('form'))
 		{
 			echo "Can't load form<br>";
 			return;
-		}
-         
+		}*/
+		
+
          
             
-      $this->script = $this->get('Script');
+      //$this->script = $this->get('Script');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -65,15 +68,27 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 	
 	protected function setDocument() 
 	{
-      $document = JFactory::getDocument();
-      
-      JHtml::_('jquery.framework');
-
-		$document->setTitle(JText::_('COM_TABAPAPO_TABAPAPO_CREATING'));
-      
-      $document->addScript('media/com_tabapapo/js/systabapapo.js' . '?' .JSession::getFormToken());
+		$document = JFactory::getDocument();
+		JHtml::_('jquery.framework');
+		$document->setTitle(JText::_('COM_TABAPAPO_TABAPAPO_CHAT'));
+		$document->addScript('media/com_tabapapo/js/systabapapo.js' . '?' .JSession::getFormToken());
 		$document->addStyleSheet('media/com_tabapapo/css/tabapapo.css' . '?' .JSession::getFormToken());
-      
+		
+		JText::script('COM_TABAPAPO_MESSAGES_TO');
+		JText::script('COM_TABAPAPO_USERSON_ALLUSERS');
+		JText::script('COM_TABAPAPO_USERSON_OWNER');
+		JText::script('COM_TABAPAPO_TABAPAPOCHAT_TALKINGTO');
+		JText::script('COM_TABAPAPO_TABAPAPOCHAT_EVERYBODY');
+		JText::script('COM_TABAPAPO_FIELD_TITLE_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_CATEGORY_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_OWNER_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_EDIT_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_PRIVATE_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_DICE_LABEL');
+		JText::script('COM_TABAPAPO_FIELD_USERS_LIMIT_LABEL');
+		JText::script('COM_TABAPAPO_YES');
+		JText::script('COM_TABAPAPO_NO');
+		JText::script('JGLOBAL_USE_GLOBAL');
       
       
       //$params = $this->get('enviaParams');

@@ -17,6 +17,6 @@ use Joomla\CMS\Factory;
 <head>
 </head>
 <body>
-<div id="showmsg" class="taba-content"></div>
+<div id="showlist" class="taba-content"></div>
 </body>
 </html>

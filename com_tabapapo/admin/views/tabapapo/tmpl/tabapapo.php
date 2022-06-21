@@ -20,6 +20,8 @@ use Joomla\CMS\Session\Session;
 
 HTMLHelper::_('behavior.multiselect');
 
+$this->addToolBar();
+
 $user      = Factory::getUser();
 $userId    = $user->get('id');
 $listOrder     = $this->escape($this->state->get('list.ordering'));
@@ -30,9 +32,8 @@ $listDirn      = $this->escape($this->state->get('list.direction'));
 
 ?>
 
-<form action="index.php?option=com_tabapapo&view=tabapapos" method="post" id="adminForm" name="adminForm">
-
-   <div class="row">
+<div class="row">
+	<form action="index.php?option=com_tabapapo&view=tabapapo" method="post" id="adminForm" name="adminForm">
       <div class="col-md-12">
          <div id="j-main-container">
 				<?php echo LayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
@@ -93,7 +94,7 @@ $listDirn      = $this->escape($this->state->get('list.direction'));
 							$canChange  = $user->authorise('core.edit.state', 'com_tabapapo.category.' . $item->catid) && $canCheckin;
 
 							$item->cat_link = Route::_('index.php?option=com_categories&extension=com_tabapapo&task=edit&type=other&id=' . $item->catid);
-                     $link = JRoute::_('index.php?option=com_tabapapo&task=tabapapo.edit&id=' . $item->id); ?>
+                     $link = JRoute::_('index.php?option=com_tabapapo&task=tabapapoadd.edit&id=' . $item->id); ?>
             			<tr>
 								<td class="text-center">
 									<?php echo HTMLHelper::_('grid.id', $i, $item->id, false, 'cid', 'cb', $item->name); ?>
@@ -102,13 +103,13 @@ $listDirn      = $this->escape($this->state->get('list.direction'));
       							<?php //echo HTMLHelper::_('administrator.featured', $item->featured, $i, $canChange); ?>
       						</td> -->
 								<td class="text-center">
-									<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'tabapapos.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+									<?php echo HTMLHelper::_('jgrid.published', $item->published, $i, 'tabapapo.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 								</td>
 
 								<td scope="row" class="has-context">
 									<div>
 										<?php if ($item->checked_out) : ?>
-											<?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'tabapapos.', $canCheckin); ?>
+											<?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'tabapapo.', $canCheckin); ?>
 										<?php endif; ?>
 										<?php if ($canEdit || $canEditOwn) : ?>
 											<a href="<?php echo $link; ?>" title="<?php echo Text::_('JACTION_EDIT'); ?> <?php echo $this->escape($item->title); ?>">
@@ -157,5 +158,6 @@ $listDirn      = $this->escape($this->state->get('list.direction'));
 
       </div>
    </div>
-</div>
 </form>
+</div>
+

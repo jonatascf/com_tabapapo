@@ -9,9 +9,21 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class TabaPapoModelForm extends JModelAdmin
-{
+use Joomla\Registry\Registry;
 
+class TabaPapoModelTabaPapoAdd extends JModelAdmin
+{
+    
+  	// Contenthistory needs to know this for restoring previous versions
+
+	public $typeAlias = 'com_tabapapo.tabapapo';
+   
+	public function getItem($pk = null) {
+   
+		$item = parent::getItem($pk);
+
+		return $item; 
+	}
 	/**
 	 * Method to get a table object, load it if necessary.
 	 *
@@ -28,7 +40,7 @@ class TabaPapoModelForm extends JModelAdmin
 		return JTable::getInstance($type, $prefix, $config);
 	}
 
-    /**
+	/**
 	 * Method to get the record form.
 	 *
 	 * @param   array    $data      Data for the form.
@@ -42,8 +54,8 @@ class TabaPapoModelForm extends JModelAdmin
 	{
 		// Get the form.
 		$form = $this->loadForm(
-			'com_tabapapo.form',
-			'add-form',
+			'com_tabapapo.tabapapo',
+			'tabapapoadd',
 			array(
 				'control' => 'jform',
 				'load_data' => $loadData
@@ -52,18 +64,24 @@ class TabaPapoModelForm extends JModelAdmin
 
 		if (empty($form))
 		{
-			$errors = $this->getErrors();
-			throw new Exception(implode("\n", $errors), 500);
+			return false;
 		}
 
 		return $form;
 	}
 
 	/**
+	 * Method to get the script that have to be included on the form
+	 *
+	 * @return string	Script files
+	 */
+	public function getScript() 
+	{
+		return 'administrator/components/com_tabapapo/models/forms/tabapapo.js';
+	}
+
+	/**
 	 * Method to get the data that should be injected in the form.
-	 * As this form is for add, we're not prefilling the form with an existing record
-	 * But if the user has previously hit submit and the validation has found an error,
-	 *   then we inject what was previously entered.
 	 *
 	 * @return  mixed  The data for the form.
 	 *
@@ -73,21 +91,26 @@ class TabaPapoModelForm extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState(
-			'com_tabapapo.edit.tabapapo.data',
+			'com_tabapapo.tabapapoadd.tabapapo.data',
 			array()
 		);
 
+		if (empty($data))
+		{
+			$data = $this->getItem();
+		}
+
 		return $data;
 	}
-    
+	
 	/**
-	 * Method to get the script that have to be included on the form
-	 * This returns the script associated with tabapapo field room validation
-	 *
-	 * @return string	Script files
+	 * Method to check if it's OK to delete a message. Overrides JModelAdmin::canDelete
 	 */
-	public function getScript() 
+	protected function canDelete($record)
 	{
-		return 'administrator/components/com_tabapapo/models/forms/tabapapo.js';
+		if( !empty( $record->id ) )
+		{
+			return JFactory::getUser()->authorise( "core.delete", "com_tabapapo.tabapapo." . $record->id );
+		}
 	}
 }

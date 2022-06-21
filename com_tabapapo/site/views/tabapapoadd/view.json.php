@@ -13,7 +13,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Form\Form;
 
-class TabaPapoViewTabaPapo extends JViewLegacy
+class TabaPapoViewTabaPapoAdd extends JViewLegacy
 {
 
    
@@ -26,12 +26,9 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$this->item = $this->get('Item');
-		
-		$globalConfig = Factory::getConfig();
-		$this->users_limit_global = $globalConfig->get('users_limit', 'No Users Limit');       
+      //$this->item = $this->get('Item');
       
-		parent::display($tpl);
+      parent::display($tpl);
 	}
 	
    

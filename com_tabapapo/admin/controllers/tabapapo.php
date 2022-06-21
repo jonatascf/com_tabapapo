@@ -9,35 +9,23 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-class TabaPapoControllerTabaPapo extends JControllerForm
+class TabaPapoControllerTabapapo extends JControllerAdmin
 {
 	/**
-	* Implement to allowAdd or not
-	*
-	* Not used at this time (but you can look at how other components use it....)
-	* Overwrites: JControllerForm::allowAdd
-	*
-	* @param array $data
-	* @return bool
-	*/
-	protected function allowAdd($data = array())
+	 * Proxy for getModel.
+	 *
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
+	 *
+	 * @return  object  The model.
+	 *
+	 * @since   1.6
+	 */
+	public function getModel($name = 'TabaPapo', $prefix = 'TabaPapoModel', $config = array('ignore_request' => true))
 	{
-		return parent::allowAdd($data);
-	}
-	/**
-	* Implement to allow edit or not
-	* Overwrites: JControllerForm::allowEdit
-	*
-	* @param array $data
-	* @param string $key
-	* @return bool
-	*/
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		$id = isset( $data[ $key ] ) ? $data[ $key ] : 0;
-		if( !empty( $id ) )
-		{
-			return JFactory::getUser()->authorise( "core.edit", "com_tabapapo.tabapapo." . $id );
-		}
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 }

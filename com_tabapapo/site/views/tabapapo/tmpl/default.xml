@@ -1,23 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
 
-	<layout title="COM_TABAPAPO_TABAPAPO_VIEW_DEFAULT_TITLE">
-		<message>COM_TABAPAPO_TABAPAPO_VIEW_DEFAULT_DESC</message>
+	<layout title="COM_TABAPAPO_TABAPAPOCHAT_VIEW_DEFAULT_TITLE">
+		<message>COM_TABAPAPO_TABAPAPOCHAT_VIEW_DEFAULT_DESC</message>
 	</layout>
-
-	<fields
-		name="request"
-		addfieldpath="/administrator/components/com_tabapapo/models/fields">
-
-		<fieldset name="request">
-			<field
-					name="id"
-					type="tabapapo"
-					label="COM_TABAPAPO_TABAPAPO_FIELD_ROOM_LABEL"
-					description="COM_TABAPAPO_TABAPAPO_FIELD_ROOM_DESC"
-					/>
-		</fieldset>
-
-	</fields>
 
 </metadata>

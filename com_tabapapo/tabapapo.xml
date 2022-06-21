@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="4.0" method="upgrade">
+<extension type="component" version="4\.[0-1]\." method="upgrade">
 
 	<name>COM_TABAPAPO</name>
 	
@@ -8,10 +8,9 @@
 	<authorEmail>jonatas@tabaoca.org</authorEmail>
 	<authorUrl>https://tabaoca.org</authorUrl>
 	<copyright>Copyright (C) 2021 Tabaoca. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later</license>
-	<creativecommons>Dices D4, D6, D8, D10, D12, D20 by Lonnie Tapscott from the Noun Project</creativecommons>
+	<license>GNU General Public License version 2 or later. Images Dice D4, D6, D8, D10, D12, D20 by Lonnie Tapscott from the Noun Project (Creative Commons).</license>
 
-	<version>0.9.0</version>
+	<version>0.9.3</version>
 
 	<description>COM_TABAPAPO_DESCRIPTION</description>
 	<namespace path="src">Joomla\Component\Tabapapo</namespace>
@@ -58,10 +57,9 @@
 	<administration>
 		<menu link="class:address-book">COM_TABAPAPO_MENU</menu>
 		<submenu>
-			<menu link="option=com_tabapapo" img="class:tabapapo"
-				alt="Tabapapo/Tabapapos">COM_TABAPAPO_TABAPAPOS</menu>
-			<menu link="option=com_categories&amp;extension=com_tabapapo"
-				view="categories" img="class:tabapapo-cat" alt="Tabapapos/Categories">COM_TABAPAPO_CATEGORIES</menu>
+			<menu link="option=com_tabapapo&amp;view=tabapapo" img="class:tabapapo">COM_TABAPAPO_DASHBOARD</menu>
+			<menu link="option=com_tabapapo&amp;view=tabapapo&amp;layout=tabapapo" img="class:tabapapo">COM_TABAPAPO_TABAPAPOS</menu>
+			<menu link="option=com_categories&amp;extension=com_tabapapo" img="class:tabapapo-cat">COM_TABAPAPO_CATEGORIES</menu>
 		</submenu>
 		<files folder="admin">
 			<filename>index.html</filename>
@@ -74,7 +72,6 @@
 			<folder>views</folder>
 			<folder>models</folder>
 			<folder>controllers</folder>
-			<folder>helpers</folder>
 		</files>
 
 		<languages folder="admin/language">
@@ -83,9 +80,9 @@
 		</languages>
 
 	</administration>
-	
+
   <updateservers>
-		<server type="component" name="Tabapapo Updates">https://tabaoca.org/tabapapo-updates/updates.xml</server>
+		<server type="extension" name="Tabapapo Updates">https://tabaoca.org/tabapapo-updates/updates.xml</server>
 	</updateservers>
-  
+
 </extension>

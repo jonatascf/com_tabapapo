@@ -9,19 +9,108 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\FormModel;
-use Joomla\CMS\Date\Date;
-
-class TabaPapoModelTabaPapo extends FormModel
+class TabaPapoModelTabaPapo extends JModelList
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JController
+	 * @since   1.6
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'title', 'a.title',
+				'alias', 'a.alias',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'catid', 'a.catid', 'category_id', 'category_title',
+				'access', 'a.access', 'access_level',
+				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
+				'language', 'a.language', 'language_title',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
+				'published', 'a.published',
+            'hits', 'a.hits',
+				'tag',
+				'level', 'c.level',
+			);
+		}
+
+		parent::__construct($config);
+	}
 
 	/**
-	 * @var object item
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return      string  An SQL query
 	 */
-	protected $item;
-   //protected $form;
 
+
+	public function getListQuery()
+	{
+		// Initialize variables.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+
+		// Create the base select statement.
+		$query->select('a.id as id, a.title as title, a.alias as alias, a.published as published, a.created as created, a.hits as hits, a.params as params')
+			  ->from($db->quoteName('#__tabapapo', 'a'))
+			  ->group('a.id');
+
+		// Join over the users on.
+		$query->select('count(o.sala_id) as users_on')
+			->join('LEFT', $db->quoteName('#__tabapapo_usu', 'o') . ' ON o.sala_id = a.id');
+
+		// Join over the categories.
+		$query->select($db->quoteName('c.title', 'category_title'))
+			->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid');
+
+		// Join with users table to get the username of the author
+		$query->select($db->quoteName('u.username', 'created_by'))
+			->join('LEFT', $db->quoteName('#__users', 'u') . ' ON u.id = a.created_by');
+
+		// Filter: like / search
+		$search = $this->getState('filter.search');
+
+		if (!empty($search))
+		{
+			$like = $db->quote('%' . $search . '%');
+			$query->where('title LIKE ' . $like);
+		}
+
+		// Filter by published state
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where('a.published = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.published IN (0, 1))');
+		}
+
+		// Add the list ordering clause.
+		$orderCol	= $this->state->get('list.ordering', 'title');
+		$orderDirn 	= $this->state->get('list.direction', 'asc');
+
+		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+
+		return $query;
+	}
+	
+
+	protected $item;
+	protected $options;
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -34,6 +123,7 @@ class TabaPapoModelTabaPapo extends FormModel
 	 * @return	void
 	 * @since	2.5
 	 */
+	
 	protected function populateState()
 	{
 		// Get the message id
@@ -46,31 +136,6 @@ class TabaPapoModelTabaPapo extends FormModel
 		parent::populateState();
 	}
 	
-	/**
-	 * Method to get a table object, load it if necessary.
-	 *
-	 * @param   string  $type    The table name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
-	 *
-	 * @return  JTable  A JTable object
-	 *
-	 * @since   1.6
-	 */
-	public function getTable($type = 'TabaPapo', $prefix = 'TabaPapoTable', $config = array())
-	{
-		return JTable::getInstance($type, $prefix, $config);
-	}
-
-	public function getScript() 
-	{
-		return '/media/com_tabapapo/js/systabapapo.js';
-	}
-	
-	/**
-	 * Get the message
-	 * @return object The message to be displayed to the user
-	 */
 	public function getItem()
 	{
 		if (!isset($this->item)) 
@@ -79,8 +144,9 @@ class TabaPapoModelTabaPapo extends FormModel
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('h.id, h.title, h.created, h.created_by, h.params, c.title as category,
-                         h.alias, h.catid, h.description, h.asset_id, h.published, h.params')
+                         h.alias, h.catid, h.description, h.asset_id, h.published, h.params, count(o.sala_id) as users_on')
 				  ->from('#__tabapapo as h')
+				  ->leftJoin('#__tabapapo_usu as o ON h.id=o.sala_id')
 				  ->leftJoin('#__categories as c ON h.catid=c.id')
 				  ->where('h.id=' . (int)$id);
 			$db->setQuery((string)$query);
@@ -101,34 +167,89 @@ class TabaPapoModelTabaPapo extends FormModel
 		}
 		return $this->item;
 	}
-   
-	public function getForm($data = array(), $loadData = false)
-	{
-		$form = $this->loadForm(
-			'com_tabapapo.tabapapo',  // just a unique name to identify the form
-			'tabapapo-form',				// the filename of the XML form definition
-										// Joomla will look in the models/forms folder for this file
-			array(
-				'control' => 'jform',	// the name of the array for the POST parameters
-				'load_data' => $loadData	// will be TRUE
-			)
-		);
+	
+    public function getOptions () {
+      
+      $currentuser = JFactory::getuser();
+      $usu_id = $currentuser->get("id");
+      //$sala_id = $form['sala_id'];
+      
+      $db = JFactory::getDbo();
 
-		return $form;
+		$query = $db->getQuery(true);
+
+		$query->select($db->quoteName(array('id', 'title', 'catid', 'created_by')));
+		$query->from($db->quoteName('#__tabapapo'));
+		//$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
+		//$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+
+		$db->setQuery($query);
+      //$db->execute();
+      //$num_rows = $db->getNumRows();
+		$this->options = $db->loadObjectlist();
+		
+      return $this->options;
+      
+    }
+
+
+    public function listarSalas ($page_actual, $list_limit) {
+		
+      $currentuser = JFactory::getuser();
+      $usu_id = $currentuser->get("id");
+      //$sala_id = $form['sala_id'];
+      
+      $start_limit = ($page_actual * $list_limit) - $list_limit;
+      
+      $db = JFactory::getDbo();
+
+		$query = $db->getQuery(true);
+		
+		//$query->select($db->quoteName('a.id'), 'id');
+		//$query->select($db->quoteName('a.title'), 'title');
+		//$query->select($db->quoteName('a.catid'), 'cat_title');
+		//$query->from($db->quoteName('#__tabapapo', 'a'));
+		//$query->join('LEFT', $db->quoteName('#__categories', 'd') . ' ON ' . $db->quoteName('a.catid') . ' = ' . $db->quoteName('d.id'));
+		//$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
+		//$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+
+		$db->setQuery($this->getListQuery());
+		$db->execute();
+		
+		$rows[0]= $db->getNumRows();
+		
+		$db->setQuery($this->getListQuery(), $start_limit, $list_limit);
+		
+		$rows[1] = $db->loadObjectlist();
+		
+		return $rows;
 	}
 
-    protected function loadFormData()
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState(
-			'com_tabapapo.tabapapoform',	// a unique name to identify the data in the session
-			array()	// prefill data if no data found in session
-		);
+  public function nSalas () {
+		
+      $currentuser = JFactory::getuser();
+      $usu_id = $currentuser->get("id");
+      //$sala_id = $form['sala_id'];
+      
+      $db = JFactory::getDbo();
 
-		return $data;
-	}
+      $query = $db->getQuery(true);
+
+      $query->select($db->quoteName(array('id', 'title', 'catid', 'created_by')));
+      $query->from($db->quoteName('#__tabapapo'));
+      //$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
+      //$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+
+      $db->setQuery($query);
+      $db->execute();
+      $num_rows = $db->getNumRows();
+      //$rows = $db->loadObjectlist();
+      
+      return $num_rows;
+  }
 
 
+	
 	public function entrarSalaB($sala_id) {
 	   
       $currentuser = JFactory::getuser();
@@ -139,7 +260,6 @@ class TabaPapoModelTabaPapo extends FormModel
       
          $usu_id = $currentuser->get("id");
          $usu_name = $currentuser->get("username");
-         //$sala_id = $form['sala_id'];
         
          $delusers = $this->deleteUsers($sala_id,'no-msg');
 
@@ -342,10 +462,8 @@ class TabaPapoModelTabaPapo extends FormModel
 	public function msgslerB($sala_id, $lmsg_id) {
 	   
       $currentuser = JFactory::getuser();
-
-      //$sala_id = $form['sala_id'];
            
-         if($currentuser->get("id") > 0){
+        if($currentuser->get("id") > 0){
          
    		try {
          
@@ -648,8 +766,8 @@ class TabaPapoModelTabaPapo extends FormModel
             $userout->params = $usu_name;
             
             $msg = $this->enviarMensagemSys($userout, 2); //msg type 2 exit
-
-         return true;	
+            
+         return $sala_id;	
 
            }
            
@@ -661,9 +779,6 @@ class TabaPapoModelTabaPapo extends FormModel
    		  }
            
       	}
-   		else {
-   			header('Location:index.php');
-   		}
 
 	}
 
@@ -753,5 +868,7 @@ class TabaPapoModelTabaPapo extends FormModel
 		  }
 
 	}
-
+	
+	
+	
 }

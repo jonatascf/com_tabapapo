@@ -36,7 +36,7 @@ $this->useCoreUI = true;
 //$tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=component' : '';
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_tabapapo&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo JRoute::_('index.php?option=com_tabapapo&view=tabapapoadd&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" 
       name="adminForm" 
       id="item-form" 
