@@ -82,7 +82,7 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 		}
 		if ($this->canDo->get('core.delete')) 
 		{
-			JToolBarHelper::deleteList('', 'tabapapo.delete', 'JTOOLBAR_DELETE');
+			JToolBarHelper::deleteList('', 'tabapapo.tabapapo.delete', 'JTOOLBAR_DELETE');
 		}
 		if ($this->canDo->get('core.admin')) 
 		{

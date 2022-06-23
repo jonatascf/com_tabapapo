@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="4\.[0-1]\." method="upgrade">
+<extension type="component" method="upgrade">
 
 	<name>COM_TABAPAPO</name>
-	
-	<creationDate>October 2021</creationDate>
 	<author>Jonatas C. Ferreira</author>
+	<creationDate>June 2022</creationDate>
 	<authorEmail>jonatas@tabaoca.org</authorEmail>
 	<authorUrl>https://tabaoca.org</authorUrl>
 	<copyright>Copyright (C) 2021 Tabaoca. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later. Images Dice D4, D6, D8, D10, D12, D20 by Lonnie Tapscott from the Noun Project (Creative Commons).</license>
-
-	<version>0.9.3</version>
-
 	<description>COM_TABAPAPO_DESCRIPTION</description>
+	<element>tabapapo</element>
+	<version>0.9.4</version>
+
 	<namespace path="src">Joomla\Component\Tabapapo</namespace>
 	<scriptfile>script.php</scriptfile>
 
@@ -58,7 +57,7 @@
 		<menu link="class:address-book">COM_TABAPAPO_MENU</menu>
 		<submenu>
 			<menu link="option=com_tabapapo&amp;view=tabapapo" img="class:tabapapo">COM_TABAPAPO_DASHBOARD</menu>
-			<menu link="option=com_tabapapo&amp;view=tabapapo&amp;layout=tabapapo" img="class:tabapapo">COM_TABAPAPO_TABAPAPOS</menu>
+			<menu link="option=com_tabapapo&amp;view=tabapapo&amp;layout=tabapapo" img="class:tabapapo-chat">COM_TABAPAPO_TABAPAPOS</menu>
 			<menu link="option=com_categories&amp;extension=com_tabapapo" img="class:tabapapo-cat">COM_TABAPAPO_CATEGORIES</menu>
 		</submenu>
 		<files folder="admin">
@@ -81,7 +80,7 @@
 
 	</administration>
 
-  <updateservers>
+	<updateservers>
 		<server type="extension" name="Tabapapo Updates">https://tabaoca.org/tabapapo-updates/updates.xml</server>
 	</updateservers>
 

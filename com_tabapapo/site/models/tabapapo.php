@@ -124,7 +124,7 @@ class TabaPapoModelTabaPapo extends JModelList
 	 * @since	2.5
 	 */
 	
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		// Get the message id
 		$jinput = JFactory::getApplication()->input;

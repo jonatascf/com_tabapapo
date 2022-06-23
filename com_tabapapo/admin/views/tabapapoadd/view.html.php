@@ -143,10 +143,10 @@ class TabaPapoViewTabaPapoAdd extends JViewLegacy
 				ToolbarHelper::versions('com_tabapapo.chatroom', $this->item->id);
 			}*/
 
-			if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations'))
+			/*if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations'))
 			{
 				ToolbarHelper::custom('tabapapo.editAssociations', 'contract', '', 'JTOOLBAR_ASSOCIATIONS', false, false);
-			}
+			}*/
 		}
 
 		ToolbarHelper::divider();
@@ -159,14 +159,15 @@ class TabaPapoViewTabaPapoAdd extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setDocument() 
-	{
+	protected function setDocument() {
+		
 		$isNew = ($this->item->id == 0);
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_TABAPAPO_TABAPAPO_CREATING')
 		                           : JText::_('COM_TABAPAPO_TABAPAPO_EDITING'));
-		$document->addScript(JURI::root() . "/administrator/components/com_tabapapo"
-		                                  . "/views/tabapapo/submitbutton.js");
+
 		JText::script('COM_TABAPAPO_TABAPAPO_ERROR_UNACCEPTABLE');
+		
 	}
+	
 }

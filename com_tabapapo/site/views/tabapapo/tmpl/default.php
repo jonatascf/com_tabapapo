@@ -50,7 +50,7 @@ if ( !$currentuser->get("id")){
 		</div>-->
 
 		<div class="col-md-4">
-			<a class="btn btn-primary btn-sm" href="?option=com_tabapapo&view=tabapapoadd&layout=tabapapoadd" role="button"><i class="icon-new"></i><?php echo ' '.Text::_('COM_TABAPAPO_ADD_CHAT_ROOM');?></a>
+			<a class="btn btn-primary btn-sm" href="<?php echo JRoute::_('index.php?option=com_tabapapo&view=tabapapoadd&layout=tabapapoadd'); ?>" role="button"><i class="icon-new"></i><?php echo ' '.Text::_('COM_TABAPAPO_ADD_CHAT_ROOM');?></a>
 			<a class="btn btn-info btn-sm" href="#" role="button" onclick="start_page();"><i class="icon-refresh"></i><?php echo ' '.Text::_('COM_TABAPAPO_REFRESH');?></a>
 		</div>
 		<div class="col-md-2"></div>

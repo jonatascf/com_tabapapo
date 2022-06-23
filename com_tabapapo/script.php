@@ -1,7 +1,7 @@
 <?php
 /**
- * @package Tabapapo Component for Joomla! 3.9
- * @version 0.8.5
+ * @package Tabapapo Component for Joomla! 4.x
+ * @version 0.9.3
  * @author Jonatas C. Ferreira
  * @copyright (C) 2021 Tabaoca.org
  * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
@@ -9,6 +9,8 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+use Joomla\CMS\Factory;
 
 /**
  * Script file of Tabapapo component.
@@ -25,13 +27,13 @@ defined('_JEXEC') or die('Restricted access');
  * <scriptfile>script.php</scriptfile>
  *
  * @package     Joomla.Administrator
- * @subpackage  com_helloworld
+ * @subpackage  com_tabapapo
  *
  * @copyright   Copyright (C) 2005 - 2018 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
-class com_tabapapoInstallerScript
-{
+class com_tabapapoInstallerScript {
+
     /**
      * This method is called after a component is installed.
      *
@@ -39,9 +41,11 @@ class com_tabapapoInstallerScript
      *
      * @return void
      */
-    public function install($parent) 
-    {
-        $parent->getParent()->setRedirectURL('index.php?option=com_tabapapo');
+
+    public function install($parent) {
+        
+        $parent->getParent()->setRedirectURL('index.php?option=com_tabapapo&view=tabapapo');
+    
     }
 
     /**
@@ -51,9 +55,11 @@ class com_tabapapoInstallerScript
      *
      * @return void
      */
-    public function uninstall($parent) 
-    {
-        echo '<p>' . JText::_('COM_TABAPAPO_UNINSTALL_TEXT') . '</p>';
+    
+    public function uninstall($parent) {
+        
+        //echo '<p>' . JText::_('COM_TABAPAPO_UNINSTALL_TEXT') . '</p>';
+    
     }
 
     /**
@@ -63,9 +69,11 @@ class com_tabapapoInstallerScript
      *
      * @return void
      */
-    public function update($parent) 
-    {
-        echo '<p>' . JText::sprintf('COM_TABAPAPO_UPDATE_TEXT', $parent->get('manifest')->version) . '</p>';
+    
+    public function update($parent) {
+
+        //echo '<p>' . JText::sprintf('COM_TABAPAPO_UPDATE_TEXT', $parent->get('manifest')->version) . '</p>';
+
     }
 
     /**
@@ -80,9 +88,11 @@ class com_tabapapoInstallerScript
      *
      * @return void
      */
-    public function preflight($type, $parent) 
-    {
-        echo '<p>' . JText::_('COM_TABAPAPO_PREFLIGHT_' . $type . '_TEXT') . '</p>';
+    
+    public function preflight($type, $parent) {
+
+        //echo '<p>' . JText::_('COM_TABAPAPO_PREFLIGHT_' . $type . '_TEXT') . '</p>';
+
     }
 
     /**
@@ -96,8 +106,19 @@ class com_tabapapoInstallerScript
      *
      * @return void
      */
-    public function postflight($type, $parent) 
-    {
-        
-    }
+	
+	public function postflight($type, $parent) {
+
+		$app = JFactory::getApplication(); 
+		
+		if ($type=='install') {
+			
+			$app->enqueueMessage(JText::_('COM_TABAPAPO_POSTFLIGHT_' . $type . '_TEXT'), 'info');
+		
+		} 
+		
+	}
+	
+
+    
 }

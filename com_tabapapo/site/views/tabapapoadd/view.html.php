@@ -14,8 +14,6 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Associations;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\GenericDataException;
-use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 use Joomla\CMS\Toolbar\Toolbar;
 
@@ -39,27 +37,30 @@ class TabaPapoViewTabaPapoAdd extends JViewLegacy
 		// Get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
-		$this->script = $this->get('State');
-
+		$this->state = $this->get('State');
 
 		// What Access Permissions does this user have? What can (s)he do?
 		$this->canDo = JHelperContent::getActions('com_tabapapo', 'tabapapo', $this->item->id);
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
+		if ($this->canDo->get('core.create'))
 		{
-			throw new GenericDataException(implode("\n", $errors), 500);
+
+			// Display the template
+			parent::display($tpl);
+
+			// Set the document
+			$this->setDocument();
+
+		} 
+		
+		else {
+				
+			$app = JFactory::getApplication(); 
+			$app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'error');
+
+			return;
+			
 		}
-
-
-		// Set the toolbar
-		//$this->addToolBar();
-
-		// Display the template
-		parent::display($tpl);
-
-		// Set the document
-		$this->setDocument();
 	}
 
 	/**
@@ -141,10 +142,10 @@ class TabaPapoViewTabaPapoAdd extends JViewLegacy
 				ToolbarHelper::versions('com_tabapapo.chatroom', $this->item->id);
 			}*/
 
-			if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations'))
+			/*if (Associations::isEnabled() && ComponentHelper::isEnabled('com_associations'))
 			{
 				ToolbarHelper::custom('tabapapoadd.editAssociations', 'contract', '', 'JTOOLBAR_ASSOCIATIONS', false, false);
-			}
+			}*/
 		}
 
 		ToolbarHelper::divider();

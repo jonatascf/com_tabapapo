@@ -71,16 +71,6 @@ class TabaPapoModelTabaPapoAdd extends JModelAdmin
 	}
 
 	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_tabapapo/models/forms/tabapapo.js';
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return  mixed  The data for the form.
@@ -91,7 +81,7 @@ class TabaPapoModelTabaPapoAdd extends JModelAdmin
 	{
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState(
-			'com_tabapapo.tabapapoadd.tabapapo.data',
+			'com_tabapapo.tabapapo.tabapapo.data',
 			array()
 		);
 

@@ -442,7 +442,7 @@ function read_users(idframe, tk){
 			        contentType: false, 
 			        type: 'POST',
 			        success: function (response) { populateUsersOn(idframe, response.data, document.getElementById('users_limit').value);
-	       								  setTimeout(function () { read_users(idframe, tk); }, 100); 
+	       								  setTimeout(function () { read_users(idframe, tk); }, 40); 
         											}
 
     });
@@ -468,7 +468,7 @@ function read_msgs(idframe, tk){
 			        contentType: false,
 			        type: 'POST',
 			        success: function (response) { populateChatRoom(idframe, response.data);
-													setTimeout(function () { read_msgs(idframe, tk); }, 100); }
+													setTimeout(function () { read_msgs(idframe, tk); }, 40); }
     });
     
 }

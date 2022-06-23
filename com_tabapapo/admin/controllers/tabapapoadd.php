@@ -43,4 +43,12 @@ protected $view_list = 'tabapapo';
 			return JFactory::getUser()->authorise( "core.edit", "com_tabapapo.tabapapo." . $id );
 		}
 	}
+	
+	public function getModel($name = 'TabaPapoadd', $prefix = 'TabaPapoModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
+	}
+	
 }
