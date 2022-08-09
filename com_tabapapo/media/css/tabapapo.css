@@ -47,9 +47,8 @@ select {
 
 .taba-frame {
    border: 0px;
-   background-color: #fff;   
+   background-color: #fff;
    width: 100%;
-
 }
 
 .taba-framechat {
@@ -85,7 +84,7 @@ select {
 }
 
 .taba-send {
-	font-size: 24px;
+	font-size: 32px;
 }
 
 .taba-square {
@@ -120,7 +119,8 @@ select {
 	padding-left: 10px;
 }
 
-.taba-small {
+.taba-button-seach {
+	padding-top: 15px;
 }
 
 .taba-hover {
@@ -142,9 +142,6 @@ select {
 
 .taba-private {
     color: #600;
-	border: 1px solid #ebccd1;
-	background-color: #f2dede;
-
 }
 
 .taba-conected {
@@ -195,7 +192,7 @@ select {
 
 .taba-msghead {
 	color: #333;
-	border: 1px solid #e3e3e3;
+	border: 2px solid #e3e3e3;
 	background-color: #f5f5f5;
 	padding-left: 5px;
 }

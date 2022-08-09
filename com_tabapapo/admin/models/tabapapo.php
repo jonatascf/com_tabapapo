@@ -39,7 +39,7 @@ class TabaPapoModelTabaPapo extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'published', 'a.published',
-            'hits', 'a.hits',
+				'hits', 'a.hits',
 				'tag',
 				'level', 'c.level',
 			);

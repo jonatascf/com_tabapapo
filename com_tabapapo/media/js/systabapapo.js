@@ -1,17 +1,27 @@
-//JAVASCRIPT
+/**
+ * @package Tabapapo Component for Joomla! 3.9
+ * @version 0.8.5
+ * @author Jonatas C. Ferreira
+ * @copyright (C) 2021 Tabaoca.org
+ * @license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html
+**/
 
 var conteudo = '';
 var flood = 0;
 
+
 function start_page() {
 
 	var mydata = new FormData();
-	var tk = document.getElementById('tk').value;
+	var tk = top.document.getElementById('jform_tk').value;
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=salasListar'+'&'+'format=json';
 
-	mydata.append('page_actual', document.getElementById('page_actual').value);
-	mydata.append('list_limit', document.getElementById('list_limit').value);
+	mydata.append('page_actual', top.document.getElementById('jform_page_actual').value);
+	mydata.append('list_limit', top.document.getElementById('jform_list_limit').value);
+	mydata.append('search', top.document.getElementById('jform_search').value);
+	mydata.append('filter', top.document.getElementById('jform_list_filter').value);
+	mydata.append('direction', top.document.getElementById('jform_list_asc').value);
 
    jQuery.ajax({ url: url,
    				 data: mydata,   
@@ -44,16 +54,17 @@ function list_rooms(items) {
 	var edit;
 	var button_room;
 	var button_edit;
+	var table;
 	
-	var table = '<table class="listRoom">' +
-				"<thead><tr><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_TITLE_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_CATEGORY_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_OWNER_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_EDIT_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_PRIVATE_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_DICE_LABEL') +
-				"</th><th>" + Joomla.JText._('COM_TABAPAPO_FIELD_USERS_LIMIT_LABEL') +
-				"</th></tr></thead><tbody>";
+	table = '<table class="listRoom">' +
+			'<thead><tr class="taba-content"><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_TITLE_LABEL') + '<i class="arrow-down-3"></i>' +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_CATEGORY_LABEL') + '<i class="arrow-down-3"></i>' +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_OWNER_LABEL') + '<i class="arrow-down-3"></i>' +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_EDIT_LABEL') +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_PRIVATE_LABEL') +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_DICE_LABEL') +
+			'</th><th>' + Joomla.JText._('COM_TABAPAPO_FIELD_USERS_LIMIT_LABEL') +
+			'</th></tr></thead><tbody>';
 
 	if(iframe.contentDocument) {
 
@@ -110,9 +121,9 @@ function list_rooms(items) {
 				
 			}
 			
-			if (document.getElementById('username').value == items[i].created_by) {
+			if (document.getElementById('jform_username').value == items[i].created_by) {
 				
-				button_edit = '<button class="taba-hover btn btn-success" onclick="' + "window.open('?option=com_tabapapo&view=tabapapoadd&layout=tabapapoadd&id=" + items[i].id + "','_parent');" + '">'+ Joomla.JText._('COM_TABAPAPO_FIELD_EDIT_LABEL') + '</button>';
+				button_edit = '<button class="btn btn-success" onclick="' + "window.open('?option=com_tabapapo&view=tabapapoadd&layout=tabapapoadd&id=" + items[i].id + "','_parent');" + '">'+ Joomla.JText._('COM_TABAPAPO_FIELD_EDIT_LABEL') + '</button>';
 				
 			}
 			else {
@@ -121,9 +132,9 @@ function list_rooms(items) {
 				
 			}
 			
-			button_room = '<button class="taba-hover btn btn-success" onclick="' + "window.open('?option=com_tabapapo&view=tabapapo&layout=tabapapochat&id=" + items[i].id + "','_parent');" + '">'+ items[i].title + '</button>';
+			button_room = '<button class="btn btn-success" onclick="' + "window.open('?option=com_tabapapo&view=tabapapo&layout=tabapapo&id=" + items[i].id + "','_parent');" + '">'+ items[i].title + '</button>';
 			
-			table += '<tr class="taba-start-hover"><td>' + button_room + '</td>'+
+			table += '<tr class="taba-start-hover"><td><i class="icon-clock" title="' + items[i].created + '"></i>' + ' ' + button_room + '</td>'+
 					 "<td>" + items[i].category_title + "</td>" +
 					 "<td>" + items[i].created_by +"</td>"+
 					 "<td>" + button_edit + "</td>" +
@@ -144,8 +155,8 @@ function list_rooms(items) {
 function pagination_chat(num_rows) {
 	
 	var html = '<ul class="pagination ms-auto mb-4 me-0">';
-	var page_actual = document.getElementById('page_actual').value;
-	var list_limit = document.getElementById('list_limit').value;
+	var page_actual = document.getElementById('jform_page_actual').value;
+	var list_limit = document.getElementById('jform_list_limit').value;
 	var totalPage = Math.ceil(num_rows / list_limit);
 	var i;
 	var n;
@@ -210,7 +221,7 @@ function pagination_chat(num_rows) {
 
 function change_page(page_n) {
 	
-	document.getElementById('page_actual').value = page_n;
+	document.getElementById('jform_page_actual').value = page_n;
 	start_page();
 	
 }
@@ -219,7 +230,7 @@ function change_page(page_n) {
 function create_chat(){
 
 	var myform = new FormData(document.getElementById("adminForm"));
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=createChat'+'&'+'format=json';
 
@@ -259,15 +270,13 @@ function atualizaIframe() {
 
 }
 
-
-
 function begin_room() {
 
 	clear_msgbox();
 	verify_msg();
 	row_frame();
 	
-	if (document.getElementById('description').value != '') {
+	if (document.getElementById('jform_description').value != '') {
 		
 		document.getElementById('divdesc').hidden = false;
 		
@@ -276,18 +285,27 @@ function begin_room() {
 	document.getElementById('resize-bottom-chat').addEventListener('mousedown', initDrag_chat, false);
 	document.getElementById('resize-bottom-users').addEventListener('mousedown', initDrag_users, false);
 
-	document.getElementById('jform[msg]').focus();
+	document.getElementById('jform_status').addEventListener('click', function () {atualizar_status();document.getElementById('jform_msg').focus();});
+	document.getElementById('jform_privado').addEventListener('click', function () {document.getElementById('jform_msg').focus();});
+
+	document.getElementById('jform_msg').addEventListener('change', function () {verify_msg();});
+	document.getElementById('jform_msg').addEventListener('input', function () {verify_msg();});
+	document.getElementById('jform_msg').addEventListener('focus', function () {verify_msg();});
+	document.getElementById('jform_msg').addEventListener('keyup', function () {verify_msg();});
+	document.getElementById('jform_msg').addEventListener('keydown', function () {verify_msg();});
+	document.getElementById('jform_msg').addEventListener('keypress', function () {verify_msg(); if (event.keyCode==13){ send_msg();}});
+	document.getElementById('jform_msg').focus();
 	
-	if (document.getElementById('jform[talkto_id]').value == 0){
+	if (document.getElementById('jform_talkto_id').value == 0){
 	
 		top.document.getElementById('cb_private').style.visibility = 'hidden';
-		system_frase(document.getElementById('jform[talkto_name]').value);
+		system_frase(document.getElementById('jform_talkto_name').value);
 		
 	}
 	else {
 		
 		top.document.getElementById('cb_private').style.visibility = 'visible';
-		system_frase(document.getElementById('jform[talkto_name]').value);
+		system_frase(document.getElementById('jform_talkto_name').value);
 		
 	}
 
@@ -296,7 +314,7 @@ function begin_room() {
 
 function row_frame() { 
 
-	if(document.getElementById("rolagem").value == 1){
+	if(document.getElementById("jform_rolagem").value == 1){
 		fread.scrollBy(0,70);
 		setTimeout("row_frame()",0); 
 
@@ -307,7 +325,7 @@ function row_frame() {
 
 function verify_msg() {
 
-	var textar = document.getElementById('jform[msg]');
+	var textar = document.getElementById('jform_msg');
  	var mensagem = textar.value;
 	var qtd = mensagem.length;
 
@@ -315,13 +333,13 @@ var frameread = 'frameread';
 
 	if((qtd > 0) && (qtd < 2)) {
 
-		document.getElementById("botenviar").innerHTML = '<i class="icon-ok taba-send taba-hover" style="color:#faa63f;" onClick="send_msg();"></i>';
+		document.getElementById("botenviar").innerHTML = '<i class="icon-ok taba-send taba-hover" title="' + Joomla.JText._('COM_TABAPAPO_SEND') + '" style="color:#faa63f;" onClick="send_msg();"></i>';
 
 	}	
 
 	if((qtd == 0)) {
 
-		document.getElementById("botenviar").innerHTML = '<i class="icon-ok taba-send"></i>';
+		document.getElementById("botenviar").innerHTML = '<i class="icon-ok taba-send" title="' + Joomla.JText._('COM_TABAPAPO_SEND') + '"></i>';
 
 	}
 
@@ -336,8 +354,8 @@ var frameread = 'frameread';
 
 function clear_msgbox() {
 
-	document.getElementById('jform[msg]').value = '';
-	document.getElementById('jform[msg]').focus();
+	document.getElementById('jform_msg').value = '';
+	document.getElementById('jform_msg').focus();
 
 }
 
@@ -345,11 +363,11 @@ function clear_msgbox() {
 function getin_room() {
 
 	var mydata = new FormData();
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=salaEntrar'+'&'+'format=json';
 
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
 
    jQuery.ajax({ url: url,
    				  data: mydata,   
@@ -359,7 +377,7 @@ function getin_room() {
 			        contentType: false,
 			        type: 'POST',
 			        success: function () {	read_msgs("frameread", tk);
-   													read_users("frameusers", tk); }
+   											read_users("frameusers", tk); }
 
     });
 
@@ -373,21 +391,19 @@ function send_msg(){
 	var aflood;
 	var msg;
 	var espacos;
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	var url = jQuery("form[name='adminForm']").attr("action");
-	 	 url += '&' + tk + '=1'+'&'+'task=mensagemEnviar'+'&'+'format=json';
+	 	url += '&' + tk + '=1'+'&'+'task=mensagemEnviar'+'&'+'format=json';
 
 	select_private();
 
-	if (document.getElementById('jform[talkto_id]').value == 0) {
+	if (document.getElementById('jform_talkto_id').value == 0) {
 
-		document.getElementById('jform[privado]').value = 0;
+		document.getElementById('jform_privadob').value = 0;
 
 	}
-	
-	document.getElementById('jform[msg]').value = stripHtml(document.getElementById('jform[msg]').value);
 
-	msg = document.getElementById('jform[msg]').value;
+	msg = document.getElementById('jform_msg').value;
 	espacos = msg.split(' ');
 	
 	if(flood == 0) {
@@ -417,8 +433,7 @@ function send_msg(){
 		}
 		else {
 		
-			aflood = 'The interval between messages must be longer than 2 seconds.';
-			//Joomla.JText._('COM_TABAPAPO_INTERVAL');
+			aflood = Joomla.JText._('COM_TABAPAPO_INTERVAL');
 			document.getElementById("exibefrase").innerHTML  = aflood;
 			setTimeout('begin_room()',4000);
 			clear_msgbox();
@@ -431,7 +446,7 @@ function read_users(idframe, tk){
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=usersLer'+'&'+'format=json';
 
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
 
 	jQuery.ajax({
 			        url: url,
@@ -441,7 +456,7 @@ function read_users(idframe, tk){
 			        processData: false,
 			        contentType: false, 
 			        type: 'POST',
-			        success: function (response) { populateUsersOn(idframe, response.data, document.getElementById('users_limit').value);
+			        success: function (response) { populateUsersOn(idframe, response.data, document.getElementById('jform_users_limit').value);
 	       								  setTimeout(function () { read_users(idframe, tk); }, 40); 
         											}
 
@@ -456,8 +471,8 @@ function read_msgs(idframe, tk){
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=mensagemLer'+'&'+'format=json';
 
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
-	mydata.append('lmsg_id', document.getElementById('lmsg_id').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
+	mydata.append('lmsg_id', document.getElementById('jform_lmsg_id').value);
 
 	jQuery.ajax({
 			        url: url,
@@ -476,14 +491,14 @@ function read_msgs(idframe, tk){
 function atualizar_status () {
 	
 	var mydata = new FormData();
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=userstatus'+'&'+'format=json';
 	
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
 	
-	if (document.getElementById('jform[status]').checked) {
+	if (document.getElementById('jform_status').checked) {
 		
 		mydata.append('status', 0);
 		
@@ -504,7 +519,7 @@ function atualizar_status () {
         			 success: 
         			 	function () {
 							
-							if (document.getElementById('jform[status]').checked) {
+							if (document.getElementById('jform_status').checked) {
 
 								document.getElementById("statusb").style = "color:#faa63f;";
 										
@@ -524,12 +539,12 @@ function atualizar_status () {
 function roll_dice(dice) {
 	
 	var mydata = new FormData();
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	
 	var url = jQuery("form[name='adminForm']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=rolldice'+'&'+'format=json';
 	
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
 	mydata.append('dice', dice);
 
 	jQuery.ajax({url: url,
@@ -543,7 +558,7 @@ function roll_dice(dice) {
         			 	function () {
 							
 							document.getElementById('divdice').hidden = true;
-							document.getElementById('jform[msg]').focus();
+							document.getElementById('jform_msg').focus();
        			 		
         			 	}
 
@@ -554,12 +569,12 @@ function roll_dice(dice) {
 function saindo() {
 
 	var mydata = new FormData();
-	var tk = document.getElementById('tk').value;
+	var tk = document.getElementById('jform_tk').value;
 	
 	var url = jQuery("form[name='adminButtons']").attr("action");
 	 	 url += '&' + tk + '=1'+'&'+'task=exitRoom'+'&'+'format=json';
 	 
-	mydata.append('sala_id', document.getElementById('jform[sala_id]').value);
+	mydata.append('sala_id', document.getElementById('jform_sala_id').value);
 
    jQuery.ajax({ url: url,
 			        data: mydata,
@@ -581,11 +596,12 @@ function populateChatRoom(idframe, msgs) {
 	var i;
 	var type;
 	var textmsg;
-	var usu_id = document.getElementById('jform[usu_id]').value;
+	var usu_id = document.getElementById('jform_usu_id').value;
 	var username;
 	var talktoname;
 	var params;
 	var paramsjson;
+	var tempo;
 
 	if(iframe.contentDocument) {
 
@@ -601,7 +617,9 @@ function populateChatRoom(idframe, msgs) {
 		
 		for (i = 0; i < msgs.length; i++) {
 			
-			document.getElementById('lmsg_id').value = msgs[i].id;
+			tempo = msgs[i].tempo;
+			
+			document.getElementById('jform_lmsg_id').value = msgs[i].id;
 			
 			params = msgs[i].params;
 			paramsjson = JSON.parse(params);
@@ -615,7 +633,7 @@ function populateChatRoom(idframe, msgs) {
 
 				type = 'taba-msgsystem';
 
-				conteudo += '<div class="' + type + '"><spam class="taba-msghead"><b>' + username + '</b> </spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
+				conteudo += '<div class="' + type + '"><spam class="taba-msghead">' + ' ' + '<i = class="icon-chevron-right" title="' + 'System Message: ' + tempo + '"></i></spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
 
 			}
 			else {
@@ -636,7 +654,7 @@ function populateChatRoom(idframe, msgs) {
 						
 					}
 
-					conteudo += '<div class="' + type + '"><spam class="taba-msghead"><b>' + username + '</b> </spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
+					conteudo += '<div class="' + type + '"><spam class="taba-msghead"title="' + tempo + '">' + ' ' + '<b>' + username + '</b> </spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
 
 				}
 				else {
@@ -645,7 +663,7 @@ function populateChatRoom(idframe, msgs) {
 
 						type = 'taba-direct';
 							
-						conteudo += '<div class="' + type + '"><spam class="taba-msghead"><b>' + username + ' ' + Joomla.JText._('COM_TABAPAPO_MESSAGES_TO') + ' ' + talktoname + '</b> </spam>' + '<spam class="taba-msg">&nbsp;' + textmsg + '</spam></div>';
+						conteudo += '<div class="' + type + '"><spam class="taba-msghead" title="' + tempo + '">' + ' ' + '<b>' + username + ' ' + '<i class="icon-arrow-right-4"></i>' + ' ' + talktoname + '</b> </spam>' + '<spam class="taba-msg">&nbsp;' + textmsg + '</spam></div>';
 							
 						}
 					else {
@@ -654,7 +672,7 @@ function populateChatRoom(idframe, msgs) {
 
 							type = 'taba-direct-private';
 
-							conteudo += '<div class="' + type + '"><span class="taba-private"><b>[x]</b></span><spam class="taba-msghead"><b>' + username + ' ' + Joomla.JText._('COM_TABAPAPO_MESSAGES_TO') + ' ' + talktoname + '</b> </spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
+							conteudo += '<div class="' + type + '"><spam class="taba-msghead" title="' + tempo + '">' + '<i class="taba-private icon-unpublish" title="' + 'Private Message' + '"></i>' + ' ' + '<b>' + username + ' ' + '<i class="icon-arrow-right-4"></i>' + ' ' + talktoname + '</b> </spam>' + '<spam class="taba-msg">' + textmsg + '</spam></div>';
 
 						} 
 
@@ -680,8 +698,13 @@ function populateUsersOn(id, userson, users_limit) {
 	var doc;
 	var i;
 	var owner;
+	var params;
+	var paramsjson;
+	var username;
+	var tempo;
 	
-	document.getElementById('users-head').innerHTML = '<span><b>' + Joomla.JText._('COM_TABAPAPO_USERSON_ALLUSERS') + ' [ ' + userson.length + '/' + users_limit + ' ]</b></span>';
+	
+	document.getElementById('users-head').innerHTML = '<span><i class="icon-users"></i>' + ' ' + '<b>' + Joomla.JText._('COM_TABAPAPO_USERSON_ALLUSERS') + ' [ ' + userson.length + '/' + users_limit + ' ]</b></span>';
 	
 	
 	if(iframe.contentDocument) {
@@ -700,13 +723,19 @@ function populateUsersOn(id, userson, users_limit) {
 						
 			owner = '';
 			
+			tempo = userson[i].tempo;
+			
+			params = userson[i].params;
+			paramsjson = JSON.parse(params);
+			username = paramsjson.usu_name;
+
 			if (userson[i].status == 0) { cla = 'taba-away'; }
 			
 			if (userson[i].status == 1) { cla = 'taba-conected'; }
 			
-			if (document.getElementById('owner').value == userson[i].usu_id) { owner = '(' + Joomla.JText._('COM_TABAPAPO_USERSON_OWNER') + ')'; }
+			if (document.getElementById('jform_owner').value == userson[i].usu_id) { owner = '<i class="icon-key" title="' + Joomla.JText._('COM_TABAPAPO_USERSON_OWNER') + '"></i>'; }
 			
-			usuarioson += '<li class="taba-hover"><div class="taba-content"><div class="taba-msg ' + cla + '" onclick="select_talkto(' + "'" + userson[i].usu_id + "'" + ',' + "'" + userson[i].params + "'" + ');">' + '<b>' + userson[i].params + '</b>' + owner +'</div></div></li>';	
+			usuarioson += '<li class="taba-hover"><div class="taba-content"><div class="taba-msg ' + cla + '" onclick="select_talkto(' + "'" + userson[i].usu_id + "'" + ',' + "'" + username + "'" + ');">' + '<i class="icon-user" title="' + tempo + '"></i>' + ' ' + '<b>' + username + '</b>' + ' ' + owner +'</div></div></li>';	
 			
 		}
 		
@@ -726,48 +755,39 @@ function liberaflood() {
 
 }
 
-function stripHtml(html) {
-
-   let tmp = document.createElement("DIV");
-   tmp.innerHTML = html;
-   return tmp.textContent || tmp.innerText || "";
-
-}
-
 function select_talkto(talkto_id, usu_name) {
 
-	top.document.getElementById('jform[talkto_id]').value = talkto_id;
-	top.document.getElementById('jform[talkto_name]').value = usu_name;
+	top.document.getElementById('jform_talkto_id').value = talkto_id;
+	top.document.getElementById('jform_talkto_name').value = usu_name;
 	
 	if (talkto_id == '0'){
 	
 		top.document.getElementById('cb_private').style.visibility = 'hidden';
-		top.document.getElementById('privado').checked = false;
-		top.document.getElementById('jform[privado]').value = 0;
+		top.document.getElementById('jform_privado').checked = false;
 		
 	}
 	else {
 		
-		if (top.document.getElementById('show_private').value == '1') {
+		if (top.document.getElementById('jform_show_private').value == '1') {
 			top.document.getElementById('cb_private').style.visibility = 'visible';
 		}
 		
 	}
 	
 	system_frase(usu_name);
-	top.document.getElementById('jform[msg]').focus();
+	top.document.getElementById('jform_msg').focus();
 
 }
 
 function select_private() {
 
-	if (document.getElementById('privado').checked) {
+	if (document.getElementById('jform_privado').checked) {
 
-	     document.getElementById('jform[privado]').value = 1;
+	     document.getElementById('jform_privadob').value = 1;
 
 	} else {
 
-	     document.getElementById('jform[privado]').value = 0;
+	     document.getElementById('jform_privadob').value = 0;
 
 	}
   
@@ -775,7 +795,7 @@ function select_private() {
 
 function system_frase(usu_name) {
 
-	if (usu_name == 0) {
+	if (usu_name == '') {
 	
 		usu_name = Joomla.JText._('COM_TABAPAPO_TABAPAPOCHAT_EVERYBODY');
 	
@@ -799,16 +819,31 @@ function show_info(type) {
 	
 	}
 
-	document.getElementById('jform[msg]').focus();
+	document.getElementById('jform_msg').focus();
 	
 }
 
-function emojis(){
-
-	
+function insert_emoji(text) {
+    
+    var el = document.getElementById('jform_msg');
+    var val = el.value, endIndex, range;
+    
+    if (typeof el.selectionStart != "undefined" && typeof el.selectionEnd != "undefined") {
+        endIndex = el.selectionEnd;
+        el.value = val.slice(0, el.selectionStart) + text + val.slice(endIndex);
+        el.selectionStart = el.selectionEnd = endIndex + text.length;
+    } else if (typeof document.selection != "undefined" && typeof document.selection.createRange != "undefined") {
+        el.focus();
+        range = document.selection.createRange();
+        range.collapse(false);
+        range.text = text;
+        range.select();
+    }
+    
+    verify_msg();
+    document.getElementById('jform_msg').focus();
+    
 }
-
-
 
 
 var startX;

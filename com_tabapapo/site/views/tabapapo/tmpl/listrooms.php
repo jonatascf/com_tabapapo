@@ -9,14 +9,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-use Joomla\CMS\Factory;
+$this->document->getWebAssetManager()->useStyle('fontawesome');
 
 ?>
 
-<html>
-<head>
-</head>
-<body>
 <div id="showlist" class="taba-content"></div>
-</body>
-</html>

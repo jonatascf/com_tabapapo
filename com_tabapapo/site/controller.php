@@ -32,10 +32,13 @@ class TabaPapoController extends JControllerLegacy
 
             $page_actual = $input->get('page_actual', 0, 'INT');
             $list_limit = $input->get('list_limit', 0, 'INT');
+            $filter = $input->get('filter', 0, 'INT');
+            $search = $input->get('search', '', 'STRING');
+            $direction = $input->get('direction', 0, 'INT');
             
       		if ($page_actual)
       		{
-      			$record = $model->listarSalas($page_actual, $list_limit);
+      			$record = $model->listarSalas($page_actual, $list_limit, $filter, $search, $direction);
       			if ($record) 
       			{
       				echo new JResponseJson($record);

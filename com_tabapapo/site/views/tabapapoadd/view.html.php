@@ -167,8 +167,7 @@ class TabaPapoViewTabaPapoAdd extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_TABAPAPO_TABAPAPO_CREATING')
 		                           : JText::_('COM_TABAPAPO_TABAPAPO_EDITING'));
-		$document->addScript(JURI::root() . "/administrator/components/com_tabapapo"
-		                                  . "/views/tabapapo/submitbutton.js");
+		//$document->addScript(JURI::root() . "/administrator/components/com_tabapapo" . "/views/tabapapo/submitbutton.js");
 		$document->addStyleSheet('media/com_tabapapo/css/tabapapo.css' . '?' .JSession::getFormToken());
 		JText::script('COM_TABAPAPO_TABAPAPO_ERROR_UNACCEPTABLE');
 	}

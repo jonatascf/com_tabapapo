@@ -55,7 +55,7 @@ class TabaPapoModelTabaPapo extends JModelList
 	 */
 
 
-	public function getListQuery()
+	public function getListQuery($filter, $search, $direction)
 	{
 		// Initialize variables.
 		$db    = JFactory::getDbo();
@@ -79,12 +79,12 @@ class TabaPapoModelTabaPapo extends JModelList
 			->join('LEFT', $db->quoteName('#__users', 'u') . ' ON u.id = a.created_by');
 
 		// Filter: like / search
-		$search = $this->getState('filter.search');
+		//$search = $this->getState('filter.search');
 
 		if (!empty($search))
 		{
 			$like = $db->quote('%' . $search . '%');
-			$query->where('title LIKE ' . $like);
+			$query->where('a.title LIKE ' . $like);
 		}
 
 		// Filter by published state
@@ -100,10 +100,25 @@ class TabaPapoModelTabaPapo extends JModelList
 		}
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'title');
-		$orderDirn 	= $this->state->get('list.direction', 'asc');
+		//$orderCol	= $this->state->get('list.ordering', 'title');
+		//$orderDirn 	= $this->state->get('list.direction', 'asc');
 
-		$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+		if ($direction == 0) {$directionb = 'asc';}
+		elseif ($direction == 1) {$directionb = 'desc';}
+		
+		if ($filter == 2) {
+			
+			$orderb = '';
+			
+		} else {
+			
+			$orderb = ', 2 asc';
+			
+		}
+		
+		$order = $filter.' '.$directionb.$orderb;
+		
+		$query->order($order);
 
 		return $query;
 	}
@@ -168,6 +183,28 @@ class TabaPapoModelTabaPapo extends JModelList
 		return $this->item;
 	}
 	
+	public function getForm($data = array(), $loadData = true)
+	{
+		$form = $this->loadForm(
+			'com_tabapapo.tabapapo',  // just a unique name to identify the form
+			'tabapapo',				// the filename of the XML form definition
+										// Joomla will look in the models/forms folder for this file
+			array(
+				'control' => 'jform',	// the name of the array for the POST parameters
+				'load_data' => $loadData	// will be TRUE
+			)
+		);
+
+		if (empty($form))
+		{
+            $errors = $this->getErrors();
+			throw new Exception(implode("\n", $errors), 500);
+		}
+
+		return $form;
+	}
+    
+    
     public function getOptions () {
       
       $currentuser = JFactory::getuser();
@@ -193,12 +230,11 @@ class TabaPapoModelTabaPapo extends JModelList
     }
 
 
-    public function listarSalas ($page_actual, $list_limit) {
+    public function listarSalas ($page_actual, $list_limit, $filter, $search, $direction) {
 		
       $currentuser = JFactory::getuser();
       $usu_id = $currentuser->get("id");
-      //$sala_id = $form['sala_id'];
-      
+            
       $start_limit = ($page_actual * $list_limit) - $list_limit;
       
       $db = JFactory::getDbo();
@@ -213,12 +249,12 @@ class TabaPapoModelTabaPapo extends JModelList
 		//$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
 		//$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
 
-		$db->setQuery($this->getListQuery());
+		$db->setQuery($this->getListQuery($filter, $search, $direction));
 		$db->execute();
 		
 		$rows[0]= $db->getNumRows();
 		
-		$db->setQuery($this->getListQuery(), $start_limit, $list_limit);
+		$db->setQuery($this->getListQuery($filter, $search, $direction), $start_limit, $list_limit);
 		
 		$rows[1] = $db->loadObjectlist();
 		
@@ -318,61 +354,61 @@ class TabaPapoModelTabaPapo extends JModelList
 
 	public function enviarMensagem($form) {
 
-      $currentuser = JFactory::getuser();
-      $usu_id = $currentuser->get("id");
-      $sala_id = $form['sala_id'];
-      
-      $db = JFactory::getDbo();
+		$currentuser = JFactory::getuser();
+		$usu_id = $currentuser->get("id");
+		$sala_id = $form['sala_id'];
+
+		$db = JFactory::getDbo();
 
 		$query = $db->getQuery(true);
 
 		$query->select($db->quoteName(array('id','usu_id')));
 		$query->from($db->quoteName('#__tabapapo_usu'));
 		$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
-      $query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
+		$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
 
 		$db->setQuery($query);
-      $db->execute();
-      $num_rows = $db->getNumRows();
+		$db->execute();
+		$num_rows = $db->getNumRows();
 		$results = $db->loadObjectlist();
-      
-      if ($num_rows == null){
-      
-         $this->insert_user($sala_id);
-         
-      }
 
-      $db = JFactory::getDbo();
+		if ($num_rows == null){
+      
+			$this->insert_user($sala_id);
+         
+		}
+
+		$db = JFactory::getDbo();
 
 		$querynow = $db->getQuery(true);
 		$querynow->select('now() as now');
 		$db->setQuery($querynow);
-      $resultnow = $db->loadObjectList();
+		$resultnow = $db->loadObjectList();
       
-      $params = new stdClass();
-      $params->usu_name = $currentuser->get("username");
-      $params->talkto_name = $form['talkto_name'];
-      $params = json_encode($params);
+		$params = new stdClass();
+		$params->usu_name = $currentuser->get("username");
+		$params->talkto_name = $form['talkto_name'];
+		$params = json_encode($params);
       
-      $mensagem = $form['msg'];
+		$mensagem = str_replace("<", "&lt", $form['msg']);
+		$mensagem = str_replace(">", "&gt", $mensagem);
       
-      if (trim($mensagem) == '') {
+		if (trim($mensagem) == '') {
          
-         return false;
-      }
-      else {
+			return false;
+		
+		} else {
          
-         $algoritmo = "AES-256-CTR";
-         $key = $form['sala_id']."-salak";
-         $iv = "ZZqZswppWgNrNQmt";
-         $tag = "";
-         $tag_length = 16;
+			$algoritmo = "AES-256-CTR";
+			$key = $form['sala_id']."-salak";
+			$iv = "ZZqZswppWgNrNQmt";
+			$tag = "";
+			$tag_length = 16;
 
-         $mensagem = openssl_encrypt($mensagem, $algoritmo, $key, OPENSSL_RAW_DATA, $iv, $tag, "", $tag_length);
-         $mensagem = base64_encode($mensagem);
+			$mensagem = openssl_encrypt($mensagem, $algoritmo, $key, OPENSSL_RAW_DATA, $iv, $tag, "", $tag_length);
+			$mensagem = base64_encode($mensagem);
          
-   		try 
-   		{         
+   		try {         
                     
             $msgchat = new stdClass();
    			
@@ -400,50 +436,46 @@ class TabaPapoModelTabaPapo extends JModelList
 
 	public function enviarMensagemSys($form, $type)	{
 
-      $currentuser = JFactory::getuser();
+		$currentuser = JFactory::getuser();
 
-      $db = JFactory::getDbo();
+		$db = JFactory::getDbo();
 
 		$querynow = $db->getQuery(true);
 		$querynow->select('now() as now');
 		$db->setQuery($querynow);
-      $resultnow = $db->loadObjectList();
+		$resultnow = $db->loadObjectList();
 
-      $params = new stdClass();
-      $params->usu_name = '>';
-      $params->talkto_name = $currentuser->get('username');
-      $params = json_encode($params);
-            
-      try 
-		{         
-         $msgchat = new stdClass();
-			
-         if ($type == 1) {
-            $msgchat->msg = $form->params.' entered.';
-         }
-         
-         if ($type == 2) {
-            $msgchat->msg = $form->params.' left.';
-         }
-         
-         if ($type == 3) {
-            $msgchat->msg = $form->msg;
-         }
-         
-         $algoritmo = "AES-256-CTR";
-         $key = $form->sala_id."-salak";
-         $iv = "ZZqZswppWgNrNQmt";
-         $tag = "";
-         $tag_length = 16;
+		$params = new stdClass();
+		$params->usu_name = '>';
+		$params->talkto_name = $currentuser->get('username');
+		$params = json_encode($params);
+		
+		$params_usu = json_decode($form->params);
+      
+		try {
+		           
+			$msgchat = new stdClass();
 
-         $msgchat->msg = openssl_encrypt($msgchat->msg, $algoritmo, $key, OPENSSL_RAW_DATA, $iv, $tag, "", $tag_length);
-         $msgchat->msg = base64_encode($msgchat->msg);
+			if ($type == 1) {$msgchat->msg = $params_usu->usu_name . ' entered.';}
 
-         $msgchat->reservado = 0;
+			if ($type == 2) {$msgchat->msg = $params_usu->usu_name . ' left.';}
+
+			if ($type == 3) {$msgchat->msg = $form->msg;}
+
+			$algoritmo = "AES-256-CTR";
+			$key = $form->sala_id."-salak";
+			$iv = "ZZqZswppWgNrNQmt";
+			$tag = "";
+			$tag_length = 16;
+
+			$msgchat->msg = openssl_encrypt($msgchat->msg, $algoritmo, $key, OPENSSL_RAW_DATA, $iv, $tag, "", $tag_length);
+			$msgchat->msg = base64_encode($msgchat->msg);
+
+			$msgchat->reservado = 0;
 			$msgchat->sala_id = $form->sala_id;
 			$msgchat->usu_id = 0; //System Id
 			$msgchat->params = $params;
-   		$msgchat->falacom_id = 0;
+			$msgchat->falacom_id = 0;
 			$msgchat->tempo = $resultnow[0]->now;
 
 			$resultmsg = JFactory::getDbo()->insertObject('#__tabapapo_msg', $msgchat);
@@ -540,7 +572,7 @@ class TabaPapoModelTabaPapo extends JModelList
    			$query->select($db->quoteName(array('id','sala_id','usu_id','status','ip','params','tempo')));
    			$query->from($db->quoteName('#__tabapapo_usu'));
    			$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
-            $query->order($db->quoteName('params'), 'ASC');
+            $query->order($db->quoteName('status'), 'ASC');
             
    			$db->setQuery($query);
             $results = $db->loadObjectList();
@@ -640,37 +672,42 @@ class TabaPapoModelTabaPapo extends JModelList
       
 		try {  
 
-         $usu_id = $currentuser->get("id");
-         $usu_name = $currentuser->get("username");
-        
-         $db = JFactory::getDbo();
-   		$querynow = $db->getQuery(true);
-   		$querynow->select('now() as now');
-   		$db->setQuery($querynow);
-         $result = $db->loadObjectList();
+			$usu_id = $currentuser->get("id");
+			$usu_name = $currentuser->get("username");
 
-         $usuchat = new stdClass();
-      	$usuchat->sala_id = $sala_id;
-      	$usuchat->usu_id = $usu_id;
-      	$usuchat->status = 1;
-      	$usuchat->params = $usu_name;
-      	$usuchat->ip = $_SERVER["REMOTE_ADDR"];
-      	$usuchat->tempo = $result[0]->now;
+			$db = JFactory::getDbo();
+			$querynow = $db->getQuery(true);
+			$querynow->select('now() as now');
+			$db->setQuery($querynow);
+			$result = $db->loadObjectList();
 
-      	$resultusu = JFactory::getDbo()->insertObject('#__tabapapo_usu', $usuchat);
+			$params = new stdClass();
+			$params->usu_name = $currentuser->get("username");
+			//$params->talkto_name = $form['talkto_name'];
+			$params = json_encode($params);
 
-         $this->enviarMensagemSys($usuchat,1);
-         
-         return true;
+			$usuchat = new stdClass();
+			$usuchat->sala_id = $sala_id;
+			$usuchat->usu_id = $usu_id;
+			$usuchat->status = 1;
+			$usuchat->params = $params;
+			$usuchat->ip = $_SERVER["REMOTE_ADDR"];
+			$usuchat->tempo = $result[0]->now;
 
-      }
-        
+			$resultusu = JFactory::getDbo()->insertObject('#__tabapapo_usu', $usuchat);
+
+			$this->enviarMensagemSys($usuchat,1);
+
+			return true;
+
+		}
+
 		catch (Exception $e)
 		{
 			$msg = $e->getMessage();
 			JFactory::getApplication()->enqueueMessage($msg, 'error'); 
 			$resultmsg = null;
-		  }
+		}
         
    	}
 		else {
@@ -740,7 +777,6 @@ class TabaPapoModelTabaPapo extends JModelList
 	   
       $currentuser = JFactory::getuser();
       $usu_id = $currentuser->get("id");
-      $usu_name = $currentuser->get("username");;
          
       if ($usu_id > 0) {
    		try {      
@@ -750,6 +786,11 @@ class TabaPapoModelTabaPapo extends JModelList
             $id = $this->selectId($usu_id, $sala_id);
 
       		$query = $db->getQuery(true);
+      		
+      		$params = new stdClass();
+			$params->usu_name = $currentuser->get("username");
+			//$params->talkto_name = $form['talkto_name'];
+			$params = json_encode($params);
 
       		$conditions = array($db->quoteName('id').' = '. $id[0]->id);
 
@@ -763,7 +804,7 @@ class TabaPapoModelTabaPapo extends JModelList
             $userout->sala_id = $sala_id;
             $userout->privado = 0;
             $userout->falacom_id = 0;
-            $userout->params = $usu_name;
+            $userout->params = $params;
             
             $msg = $this->enviarMensagemSys($userout, 2); //msg type 2 exit
             

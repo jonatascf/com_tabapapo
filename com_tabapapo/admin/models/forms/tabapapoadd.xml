@@ -213,9 +213,8 @@
 					type="list"
 					label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_LABEL"
 					description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_CATEGORY_DESC"
-					default=""
+					default="0"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
@@ -224,9 +223,8 @@
 					type="list"
 					label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICE_LABEL"
 					description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_DICE_DESC"
-					default=""
+					default="0"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
@@ -235,9 +233,8 @@
 					type="list"
 					label="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_PRIVATE_LABEL"
 					description="COM_TABAPAPO_TABAPAPO_FIELD_SHOW_PRIVATE_DESC"
-					default=""
+					default="0"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
@@ -246,9 +243,8 @@
 					type="list"
 					label="COM_TABAPAPO_TABAPAPO_FIELD_USERS_LIMIT_LABEL"
 					description="COM_TABAPAPO_TABAPAPO_FIELD_USERS_LIMIT_DESC"
-					default=""
+					default="10"
 			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="2">2</option>
 				<option value="3">3</option>
 				<option value="4">4</option>

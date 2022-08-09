@@ -15,7 +15,6 @@ use Joomla\CMS\Form\Form;
 
 class TabaPapoViewTabaPapo extends JViewLegacy
 {
-
    
 	/**
 	 * Display the Tabapapo view
@@ -36,11 +35,11 @@ class TabaPapoViewTabaPapo extends JViewLegacy
       
 		//$this->table = $this->get('Table');
 
-		/*if (!$this->form = $this->get('form'))
+		if (!$this->form = $this->get('Form'))
 		{
 			echo "Can't load form<br>";
 			return;
-		}*/
+		}
 		
 
          
@@ -89,6 +88,8 @@ class TabaPapoViewTabaPapo extends JViewLegacy
 		JText::script('COM_TABAPAPO_YES');
 		JText::script('COM_TABAPAPO_NO');
 		JText::script('JGLOBAL_USE_GLOBAL');
+		JText::script('COM_TABAPAPO_INTERVAL');
+		JText::script('COM_TABAPAPO_SEND');
       
       
       //$params = $this->get('enviaParams');

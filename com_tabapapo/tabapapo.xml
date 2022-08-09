@@ -10,7 +10,7 @@
 	<license>GNU General Public License version 2 or later. Images Dice D4, D6, D8, D10, D12, D20 by Lonnie Tapscott from the Noun Project (Creative Commons).</license>
 	<description>COM_TABAPAPO_DESCRIPTION</description>
 	<element>tabapapo</element>
-	<version>0.9.4</version>
+	<version>0.9.5</version>
 
 	<namespace path="src">Joomla\Component\Tabapapo</namespace>
 	<scriptfile>script.php</scriptfile>
