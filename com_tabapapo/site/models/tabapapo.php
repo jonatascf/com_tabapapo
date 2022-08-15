@@ -55,7 +55,7 @@ class TabaPapoModelTabaPapo extends JModelList
 	 */
 
 
-	public function getListQuery($filter, $search, $direction)
+	public function getListTaba($filter, $search, $direction)
 	{
 		// Initialize variables.
 		$db    = JFactory::getDbo();
@@ -249,12 +249,12 @@ class TabaPapoModelTabaPapo extends JModelList
 		//$query->where($db->quoteName('usu_id').'='.$db->quote($usu_id));
 		//$query->where($db->quoteName('sala_id').'='.$db->quote($sala_id));
 
-		$db->setQuery($this->getListQuery($filter, $search, $direction));
+		$db->setQuery($this->getListTaba($filter, $search, $direction));
 		$db->execute();
 		
 		$rows[0]= $db->getNumRows();
 		
-		$db->setQuery($this->getListQuery($filter, $search, $direction), $start_limit, $list_limit);
+		$db->setQuery($this->getListTaba($filter, $search, $direction), $start_limit, $list_limit);
 		
 		$rows[1] = $db->loadObjectlist();
 		
