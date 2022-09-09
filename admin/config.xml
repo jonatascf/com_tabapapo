@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<fieldset
+		name="titles"
+		label="COM_TABAPAPO_CONFIG_ROOM_SETTINGS_LABEL"
+		description="COM_TABAPAPO_CONFIG_ROOM_SETTINGS_DESC"
+	>
+		<field
+			name="cb_integration"
+			type="radio"
+			label="COM_TABAPAPO_TABAPAPO_FIELD_CBINTEGRATION_LABEL"
+			description="COM_TABAPAPO_TABAPAPO_FIELD_CBINTEGRATION_DESC"
+			readonly="true"
+			class="btn-group btn-group-yesno"
+			default="1"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+ 	</fieldset>
+	<fieldset
+		name="permissions"
+		label="JCONFIG_PERMISSIONS_LABEL"
+		description="JCONFIG_PERMISSIONS_DESC"
+	>
+		<field
+			name="rules"
+			type="rules"
+			label="JCONFIG_PERMISSIONS_LABEL"
+			class="inputbox"
+			validate="rules"
+			filter="rules"
+			component="com_tabapapo"
+			section="component"
+		/>
+	</fieldset>
+</config>

@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset addfieldprefix="Joomla\Component\Tabapapo\Administrator\Field"
+	>
+		<field
+		  name="id"
+			type="text"
+			label="JGLOBAL_FIELD_ID_LABEL"
+			class="readonly"
+			default="0"
+			readonly="true"
+				/>
+		<field
+			name="asset_id"
+			type="hidden"
+			filter="unset"
+		/>
+		<field
+		  name="title"
+			type="text"
+			label="JGLOBAL_TITLE"
+			size="40"
+			required="true"
+			maxlength="255"
+				/>
+		<field
+			name="alias"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			hint="JFIELD_ALIAS_PLACEHOLDER"
+			size="45"
+		/>
+		<field
+			name="description" 
+			type="textarea"
+			label="COM_TABAPAPO_FIELD_DESCRIPTION_LABEL" 
+			cols="30"
+			rows="3"
+		/>  
+		<field
+			name="catid"
+			type="categoryedit"
+			extension="com_tabapapo"
+			default=""
+			addfieldprefix="Joomla\Component\Categories\Administrator\Field"
+			label="JCATEGORY"
+			required="true"
+		/>
+
+		<field
+			name="tags"
+			type="tag"
+			label="JTAG"
+			multiple="true"
+		/>
+
+		<field
+			name="created"
+			type="calendar"
+			label="COM_TABAPAPO_FIELD_CREATED_LABEL"
+			translateformat="true"
+			showtime="true"
+			size="22"
+			filter="user_utc"
+		/>
+
+		<field
+			name="created_by"
+			type="user"
+			label="COM_TABAPAPO_FIELD_CREATED_BY_LABEL"
+			validate="UserId"
+		/>
+		<field
+			name="created_by_alias"
+			type="text"
+			label="COM_TABAPAPO_FIELD_CREATED_BY_ALIAS_LABEL"
+			size="20"
+		/>
+
+		<field
+			name="modified"
+			type="calendar"
+			label="JGLOBAL_FIELD_MODIFIED_LABEL"
+			class="form-control"
+			translateformat="true"
+			showtime="true"
+			size="22"
+			readonly="true"
+			filter="user_utc"
+		/>
+
+		<field
+			name="modified_by"
+			type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			class="readonly"
+			readonly="true"
+			filter="unset"
+			validate="UserId"
+		/>
+
+		<field
+			name="checked_out"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="checked_out_time"
+			type="hidden"
+			filter="unset"
+		/>
+
+		<field
+			name="publish_up"
+			type="calendar"
+			label="COM_TABAPAPO_FIELD_PUBLISH_UP_LABEL"
+			translateformat="true"
+			showtime="true"
+			size="22"
+			filter="user_utc"
+		/>
+
+		<field
+			name="publish_down"
+			type="calendar"
+			label="COM_TABAPAPO_FIELD_PUBLISH_DOWN_LABEL"
+			translateformat="true"
+			showtime="true"
+			size="22"
+			filter="user_utc"
+		/>
+
+		<field
+			name="metakey"
+			type="textarea"
+			label="JFIELD_META_KEYWORDS_LABEL"
+			rows="3"
+			cols="30"
+		/>
+
+		<field
+			name="metadesc"
+			type="textarea"
+			label="JFIELD_META_DESCRIPTION_LABEL"
+			rows="3"
+			cols="30"
+			maxlength="160"
+			charcounter="true"
+		/>
+
+		<field
+			name="access"
+			type="accesslevel"
+			label="JFIELD_ACCESS_LABEL"
+			filter="UINT"
+			validate="options"
+		/>
+
+		<field
+			name="language"
+			type="contentlanguage"
+			label="JFIELD_LANGUAGE_LABEL"
+			>
+			<option value="*">JALL</option>
+		</field>
+
+		<field
+			name="featured"
+			type="radio"
+			label="JFEATURED"
+			layout="joomla.form.field.radio.switcher"
+			default="0"
+			>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
+		<field
+			name="published"
+			type="list"
+			label="JSTATUS"
+			default="1"
+			class="form-select-color-state"
+			size="1"
+			validate="options"
+			>
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+			<option value="2">JARCHIVED</option>
+			<option value="-2">JTRASHED</option>
+
+		</field>
+
+		<field
+			name="version_note"
+			type="text"
+			label="JGLOBAL_FIELD_VERSION_NOTE_LABEL"
+			size="45"
+			maxlength="255"
+		/>
+
+	</fieldset>
+
+	<fields name="params">
+		<fieldset
+				name="display"
+				label="COM_TABAPAPO_TAB_DISPLAY_OPTIONS"
+		>
+			<field
+					name="show_category"
+					type="radio"
+					label="COM_TABAPAPO_FIELD_SHOW_CATEGORY_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_CATEGORY_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+					hiddenDescription="true"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field
+					name="show_dice"
+					type="radio"
+					label="COM_TABAPAPO_FIELD_SHOW_DICE_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_DICE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+					hiddenDescription="true"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="show_private"
+					type="radio"
+					label="COM_TABAPAPO_FIELD_SHOW_PRIVATE_LABEL"
+					description="COM_TABAPAPO_FIELD_SHOW_PRIVATE_DESC"
+					class="btn-group btn-group-yesno"
+					default="0"
+					hiddenDescription="true"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			<field
+					name="users_limit"
+					type="list"
+					label="COM_TABAPAPO_TABAPAPO_ADD_USERS_LIMIT_LABEL"
+					description="COM_TABAPAPO_TABAPAPO_ADD_USERS_LIMIT_DESC"
+					default="10"
+			>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option>
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="30">30</option>
+				<option value="40">40</option>
+				<option value="50">50</option>
+				<option value="64">64</option>
+			</field>
+
+		</fieldset>
+	</fields>
+	
+	<fields name="metadata" label="COM_TABAPAPO_METADATA_OPTIONS">
+		<fieldset name="jmetadata"
+				  label="COM_TABAPAPO_METADATA_OPTIONS">
+
+			<field
+				name="robots"
+				type="list"
+				label="COM_TABAPAPO_METADATA_ROBOTS_LABEL"
+				validate="options"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="index, follow" />
+				<option value="noindex, follow" />
+				<option value="index, nofollow" />
+				<option value="noindex, nofollow" />
+			</field>
+
+			<field
+				name="rights"
+				type="text"
+				label="JFIELD_META_RIGHTS_LABEL"
+				filter="string"
+				size="20"
+			/>
+
+		</fieldset>
+	</fields>
+
+	<field
+		name="hits"
+		type="text"
+		label="JGLOBAL_HITS"
+		class="readonly"
+		readonly="true"
+		filter="unset"
+	/>
+
+ 	<field
+		name="version"
+		type="text"
+		label="COM_TABAPAPO_FIELD_VERSION_LABEL"
+		class="readonly"
+		size="6"
+		readonly="true"
+		filter="unset"
+	/>
+  
+</form>

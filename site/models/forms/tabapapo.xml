@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<field
+		name="msg" 
+		type="text"
+		class="taba-message"
+		label="COM_TABAPAPO_FIELD_MESSAGE_LABEL" 
+		description="COM_TABAPAPO_FIELD_MESSAGE_DESC"
+		filter="raw"
+		hiddenLabel="true"
+		hiddenDescription="true"
+	/>  
+	<field
+		name="status"
+		type="checkbox"
+		label="COM_TABAPAPO_FIELD_AWAY_LABEL"
+		description="COM_TABAPAPO_FIELD_AWAY_DESC"
+		class="form-check"
+		hiddenDescription="true"
+	/>
+	<field
+		name="privado"
+		type="checkbox"
+		label="COM_TABAPAPO_FIELD_PRIVATE_LABEL"
+		description="COM_TABAPAPO_FIELD_PRIVATE_DESC"
+		class="form-check"
+		hiddenDescription="true"
+	/>
+	<field
+		name="privadob"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="sala_id"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="tempo"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="usu_id"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="talkto_id"
+		type="hidden"
+		default="0"
+	/>
+	<field
+		name="talkto_name"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="owner"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="description"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="show_info"
+		type="hidden"
+		default="0"
+	/>
+	<field
+		name="show_private"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="users_limit"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="lmsg_id"
+		type="hidden"
+		default="0"
+	/>
+	<field
+		name="tk"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="rolagem"
+		type="hidden"
+		default="1"
+	/>
+	<field
+		name="search"
+		type="text"
+		label="COM_TABAPAPO_FIELD_SEARCH_LABEL"
+		default=""
+		hint="COM_TABAPAPO_FIELD_SEARCH_HINT"
+		hiddenLabel="true"
+		hiddenDescription="true"
+	/>
+	<field
+		name="list_limit"
+		type="list"
+		label="COM_TABAPAPO_FIELD_LISTLIMIT_LABEL"
+		default="10"
+		hiddenLabel="true"
+		hiddenDescription="true"
+		>
+		<option value="10">10</option>
+		<option value="15">15</option>
+		<option value="20">20</option>
+		<option value="25">25</option>
+		<option value="30">30</option>
+		<option value="50">50</option>
+		<option value="100">100</option>
+		<option value="200">200</option>
+		<option value="500">500</option>
+		<option value="0">All</option>
+	</field>
+	<field
+		name="list_filter"
+		type="list"
+		label="COM_TABAPAPO_FIELD_LISTFILTER_LABEL"
+		default="5"
+		hiddenLabel="true"
+		hiddenDescription="true"
+		>
+		<option value="2">COM_TABAPAPO_FIELD_TITLE_LABEL</option>
+		<option value="9">COM_TABAPAPO_FIELD_CATEGORY_LABEL</option>
+		<option value="10">COM_TABAPAPO_FIELD_OWNER_LABEL</option>
+	</field>
+	<field
+		name="my_filter"
+		type="list"
+		label="COM_TABAPAPO_FIELD_MYFILTER_LABEL"
+		default="0"
+		hiddenLabel="true"
+		hiddenDescription="true"
+		>
+		<option value="0">COM_TABAPAPO_ALLCHATS</option>
+		<option value="1">COM_TABAPAPO_MYFILTER</option>
+	</field>
+	<field
+		name="list_asc"
+		type="list"
+		label="COM_TABAPAPO_FIELD_LISTASC_LABEL"
+		default="5"
+		hiddenLabel="true"
+		hiddenDescription="true"
+		>
+		<option value="0">COM_TABAPAPO_FIELD_ASC_LABEL</option>
+		<option value="1">COM_TABAPAPO_FIELD_DESC_LABEL</option>
+	</field>
+	<field
+		name="users_limit_global"
+		type="hidden"
+		default="10"
+	/>
+	<field
+		name="username"
+		type="hidden"
+		default=""
+	/>
+	<field
+		name="page_actual"
+		type="hidden"
+		default="1"
+	/>
+
+</form>
